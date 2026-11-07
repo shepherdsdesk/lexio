@@ -1,0 +1,1 @@
+{"name": "렉시오", "short_name": "렉시오", "description": "읽고 · 묵상하고 · 전하다 — 설교 작업실", "start_url": "./index.html", "display": "standalone", "background_color": "#f4f1ea", "theme_color": "#1f4e5f", "icons": [{"src": "icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}]}

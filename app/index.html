@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>렉시오 · 설교 작업실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="webfonts" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@400;500;600;700&family=Gowun+Batang:wght@400;700&family=Nanum+Myeongjo:wght@400;700&family=Noto+Serif+Hebrew:wght@400;600&family=Gentium+Book+Plus:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f1ea; --paper:#fffdf8; --panel:#faf7f0; --ink:#26221d; --ink2:#5d554b; --ink3:#8d8478;
+  --line:#e4ddcf; --line2:#d6cdbb; --accent:#1f4e5f; --accent2:#2f6f84; --accentSoft:#e3eef1;
+  --gold:#a8814a; --goldSoft:#f5ecdc; --warn:#b5651d; --bad:#a33b3b; --good:#3d7a4f;
+  --hl:#fff1c7; --sel:#e6f0f3;
+  --ui:'Noto Sans KR',system-ui,-apple-system,sans-serif;
+  --read:'Noto Serif KR',serif;
+  --heb:'Noto Serif Hebrew','SBL Hebrew',serif; --grk:'Gentium Book Plus','Noto Serif',serif;
+  --readSize:18px; --editSize:17px; --studySize:15px; --readLH:1.85; --radius:12px;
+  --shadow:0 1px 2px rgba(60,45,20,.06),0 4px 16px rgba(60,45,20,.06);
+}
+body.night{
+  --bg:#191a1c; --paper:#222326; --panel:#1e1f22; --ink:#ebe6dc; --ink2:#bdb5a8; --ink3:#8c857a;
+  --line:#34353a; --line2:#45464c; --accent:#7fb8c9; --accent2:#9ccbd9; --accentSoft:#24343a;
+  --gold:#d2b07c; --goldSoft:#33291b; --hl:#4a3f1c; --sel:#253339;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--accent)}
+.hidden{display:none!important}
+
+/* 끌어서 크기 조절 */
+.vsplit{position:absolute;top:0;bottom:0;left:var(--lw,33.3%);width:10px;margin-left:-5px;cursor:col-resize;z-index:5}
+.vsplit:hover,.vsplit.on{background:linear-gradient(90deg,transparent 4px,var(--accent2) 4px,var(--accent2) 6px,transparent 6px)}
+.main.wideLeft .vsplit,.main.noLeft .vsplit{display:none}
+.sgrip{position:absolute;left:0;right:0;top:-5px;height:10px;cursor:row-resize;z-index:3}
+.sgrip:hover,.sgrip.on{background:linear-gradient(transparent 4px,var(--accent2) 4px,var(--accent2) 6px,transparent 6px)}
+.study.min .sgrip{display:none}
+body.dragging{user-select:none;-webkit-user-select:none;cursor:col-resize}
+body.dragging.row{cursor:row-resize}
+@media (max-width:900px){.vsplit{display:none}}
+/* 선택한 글 도구 */
+.selpop{position:fixed;z-index:80;display:flex;gap:4px;background:var(--ink);padding:5px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.selpop button{border:none;background:transparent;color:var(--paper);font:inherit;font-size:13px;font-weight:600;padding:6px 10px;border-radius:7px;white-space:nowrap;cursor:pointer}
+.selpop button:hover{background:rgba(255,255,255,.14)}
+.selpop .sep{width:1px;background:rgba(255,255,255,.2);margin:4px 2px}
+.zbtn{border:none;background:transparent;color:var(--ink3);font-size:12.5px;font-weight:700;padding:5px 7px;border-radius:7px;cursor:pointer}
+.zbtn:hover{background:var(--panel);color:var(--ink)}
+/* 설정 단추 */
+#bSet{font-size:13.5px}
+#bSet .gear{font-size:18px;line-height:1}
+/* 색 테마 */
+body.th-white{--bg:#f5f6f7;--paper:#ffffff;--panel:#f8f9fa;--line:#e3e5e8;--line2:#d2d6db;--goldSoft:#f6efe2}
+body.th-sepia{--bg:#efe6d4;--paper:#fbf5e8;--panel:#f5ecda;--ink:#3b2f22;--ink2:#64543f;--line:#e2d4b8;--line2:#d3c19d;--accent:#7a4b26;--accent2:#965f33;--accentSoft:#f1e3d2;--sel:#f1e3d2}
+body.th-green{--bg:#eef1ec;--paper:#fbfcf9;--panel:#f3f6f0;--line:#dde4d6;--line2:#c9d3c0;--accent:#2f5d46;--accent2:#3f7a5c;--accentSoft:#e2ede5;--sel:#e2ede5}
+body.th-navy{--bg:#eef1f6;--paper:#fcfdff;--panel:#f3f5fa;--line:#dde2ec;--line2:#c8d0de;--accent:#24407a;--accent2:#3557a0;--accentSoft:#e2e9f6;--sel:#e2e9f6}
+.themes{display:flex;gap:6px;flex-wrap:wrap}
+.themes button{border:2px solid transparent;border-radius:9px;padding:6px 10px;font-size:12.5px;cursor:pointer;display:flex;align-items:center;gap:6px;background:var(--panel)}
+.themes button.on{border-color:var(--accent)}
+.themes i{width:14px;height:14px;border-radius:50%;display:inline-block}
+
+/* top bar */
+.top{height:56px;display:flex;align-items:center;gap:12px;padding:0 18px;background:var(--paper);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;letter-spacing:-.01em;white-space:nowrap}
+.brand .mark{width:32px;height:32px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center}
+.bname{display:flex;flex-direction:column;line-height:1.15;font-family:var(--read);font-size:18px;letter-spacing:.02em}
+.bname small{font-family:var(--ui);font-size:10.5px;font-weight:500;color:var(--ink3);letter-spacing:0;margin-top:2px}
+@media (max-width:900px){.bname small{display:none}}
+body.night .brand .mark{color:#10191c}
+.top .title{flex:1;min-width:0;color:var(--ink2);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status{font-size:12px;color:var(--ink3);white-space:nowrap}
+.status .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--good);margin-right:5px;vertical-align:1px}
+.status.local .dot{background:var(--gold)}
+.btn{border:1px solid var(--line2);background:var(--paper);border-radius:9px;padding:7px 12px;font-size:13.5px;font-weight:500;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:background .15s,border-color .15s}
+.btn:hover{background:var(--panel);border-color:var(--ink3)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+body.night .btn.primary{color:#0f1a1d}
+.btn.primary:hover{background:var(--accent2)}
+.btn.ghost{border-color:transparent;background:transparent}
+.btn.ghost:hover{background:var(--panel)}
+.btn.sm{padding:4px 9px;font-size:12.5px;border-radius:7px}
+.btn.gold{border-color:var(--gold);color:var(--gold)}
+.btn:disabled{opacity:.45;cursor:default}
+.iconbtn{border:none;background:transparent;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--ink2)}
+.iconbtn:hover{background:var(--panel);color:var(--ink)}
+
+/* layout */
+.main{position:relative;height:calc(100% - 56px);display:grid;grid-template-columns:var(--lw,33.3%) 1fr}
+.main.wideLeft{grid-template-columns:1fr 1fr}
+.main.noLeft{grid-template-columns:0 1fr}
+.main.noLeft .left{visibility:hidden}
+.left{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0;min-height:0}
+.right{display:flex;flex-direction:column;min-width:0;min-height:0}
+.mobileSwitch,.mobileSwitch.seg{display:none}
+@media (max-width:900px){
+  .main,.main.wideLeft{grid-template-columns:1fr}
+  .main.showRight .left{display:none} .main:not(.showRight) .right{display:none}
+  .mobileSwitch,.mobileSwitch.seg{display:inline-flex}
+  .top .title,.hideNarrow{display:none}
+}
+
+/* left panel */
+.lhead{padding:12px 14px 10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px;background:var(--panel)}
+.row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+select.sel{border:1px solid var(--line2);background:var(--paper);border-radius:8px;padding:6px 8px;font-size:14px;max-width:100%}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:var(--paper)}
+.seg button{border:none;background:transparent;padding:5px 10px;font-size:12.5px;color:var(--ink2)}
+.seg button.on{background:var(--accent);color:#fff}
+body.night .seg button.on{color:#0f1a1d}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{border:1px solid var(--line2);background:var(--paper);border-radius:999px;padding:3px 10px;font-size:12.5px;color:var(--ink2)}
+.chip.on{background:var(--accentSoft);border-color:var(--accent);color:var(--accent);font-weight:600}
+.chip.prim{background:var(--accent);border-color:var(--accent);color:#fff}
+body.night .chip.prim{color:#0f1a1d}
+.ltext sup{font-size:.6em;color:var(--ink3)}
+.fn{font-family:var(--ui);font-size:.68em;color:var(--ink3);line-height:1.55;margin:2px 0 4px}
+.ltext{flex:1;overflow:auto;padding:14px 18px 40px;font-family:var(--read);font-size:var(--readSize);line-height:var(--readLH);min-height:0}
+.chTitle{font-family:var(--read);font-weight:700;font-size:1.15em;margin:2px 0 12px;color:var(--ink)}
+.verse{padding:3px 6px;margin:0 -6px;border-radius:8px;transition:background .15s}
+.verse.sel{background:var(--sel)}
+.vn{font-family:var(--ui);font-size:.62em;font-weight:700;color:var(--gold);vertical-align:.35em;margin-right:5px;cursor:pointer;padding:2px 3px;border-radius:4px;user-select:none}
+.vn:hover{background:var(--goldSoft)}
+.w{cursor:pointer;border-radius:3px;transition:background .1s}
+.w:hover{background:var(--hl)}
+.w.act{background:var(--accentSoft);box-shadow:inset 0 -2px 0 var(--accent)}
+.cmpv{padding:8px 0 10px;border-bottom:1px dashed var(--line)}
+.cmpv.sel{background:var(--sel);margin:0 -10px;padding:8px 10px 10px;border-radius:8px}
+.cmpLine{display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:baseline}
+.cmpLab{font-family:var(--ui);font-size:11px;font-weight:600;color:var(--ink3);text-align:right;line-height:1.4;padding-top:.4em}
+.heb{font-family:var(--heb);direction:rtl;text-align:right;font-size:1.12em}
+.grk{font-family:var(--grk);font-size:1.05em}
+.selbar{display:flex;align-items:center;gap:6px;padding:8px 12px;border-top:1px solid var(--line);background:var(--goldSoft);font-size:13px;flex-wrap:wrap}
+.selbar b{color:var(--gold)}
+
+.study{position:relative;border-top:1px solid var(--line2);background:var(--paper);display:flex;flex-direction:column;height:var(--sh,44%);min-height:120px;max-height:85%}
+.study.min{height:40px;min-height:40px}
+.study.min .sbody{display:none}
+.stabs{display:flex;align-items:center;gap:2px;padding:4px 8px;border-bottom:1px solid var(--line)}
+.stabs button.t{border:none;background:transparent;padding:6px 10px;font-size:13px;font-weight:600;color:var(--ink3);border-radius:7px}
+.stabs button.t.on{color:var(--accent);background:var(--accentSoft)}
+.sbody{flex:1;overflow:auto;padding:14px 16px 24px;font-size:var(--studySize);min-height:0}
+.lemma{font-size:1.9em;line-height:1.3;margin:2px 0}
+.xlit{color:var(--ink2);font-size:.95em}
+.sn{display:inline-block;font-size:.78em;font-weight:700;color:#fff;background:var(--gold);border-radius:6px;padding:1px 7px;margin-right:6px;vertical-align:2px}
+.def{margin:10px 0;padding:10px 12px;background:var(--panel);border-radius:9px;border:1px solid var(--line)}
+.def .k{font-size:.78em;font-weight:700;color:var(--ink3);margin-bottom:2px;letter-spacing:.02em}
+.usage{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0}
+.usage span{background:var(--goldSoft);color:var(--ink);border-radius:6px;padding:2px 8px;font-size:.88em}
+.usage span i{font-style:normal;color:var(--gold);font-weight:700;margin-left:4px;font-size:.85em}
+.occ{font-family:var(--read);font-size:1em;padding:6px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.occ:hover{background:var(--panel)}
+.occ b{font-family:var(--ui);font-size:.82em;color:var(--accent);margin-right:6px}
+.occ mark{background:var(--hl);color:inherit;border-radius:3px;padding:0 1px}
+.links{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.links a{font-size:12.5px;text-decoration:none;border:1px solid var(--line2);border-radius:7px;padding:3px 9px;color:var(--ink2);background:var(--paper)}
+.links a:hover{border-color:var(--accent);color:var(--accent)}
+.cmt{font-family:var(--read);font-size:1.05em;line-height:1.8}
+.cmt .hl{color:var(--accent);font-weight:700}
+.muted{color:var(--ink3)}
+.small{font-size:12.5px}
+.empty{color:var(--ink3);text-align:center;padding:30px 14px;font-size:14px}
+
+/* right panel */
+.rscroll{flex:1;overflow:auto;min-height:0}
+.rwrap{max-width:860px;margin:0 auto;padding:22px 28px 140px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.head{padding:18px 20px}
+.tinput{width:100%;border:none;background:transparent;font-family:var(--read);font-size:26px;font-weight:700;padding:2px 0;outline:none;letter-spacing:-.01em}
+.tinput::placeholder{color:var(--ink3);font-weight:500}
+.meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.meta label{font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:6px}
+.meta input,.meta select{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:5px 8px;font-size:13.5px}
+.passage{display:inline-flex;align-items:center;gap:6px;background:var(--goldSoft);color:var(--ink);border-radius:8px;padding:5px 10px;font-size:13.5px;font-weight:600;cursor:pointer;border:1px solid transparent}
+.passage:hover{border-color:var(--gold)}
+.passage.none{color:var(--ink3);font-weight:500;background:var(--panel);border:1px dashed var(--line2)}
+.bigidea{margin-top:14px}
+.bigidea .lab{font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.03em;margin-bottom:4px}
+.bigidea textarea{width:100%;border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:9px 12px;font-family:var(--read);font-size:16px;resize:none;outline:none;line-height:1.6}
+
+.steps{display:flex;gap:6px;margin:18px 0 12px;align-items:center;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 14px 6px 6px;font-size:13.5px;color:var(--ink2);font-weight:500}
+.step .n{width:22px;height:22px;border-radius:50%;background:var(--line);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--ink2)}
+.step.on{border-color:var(--accent);color:var(--accent);font-weight:700}
+.step.on .n{background:var(--accent);color:#fff}
+.step.done .n{background:var(--gold);color:#fff}
+.stepArrow{color:var(--line2)}
+.summary{font-size:13px;color:var(--ink2);margin:-4px 2px 10px}
+.summary b{color:var(--ink)}
+
+.pane{padding:18px 20px}
+.pane h3{margin:0 0 4px;font-size:17px}
+.pane .sub{color:var(--ink3);font-size:13px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.opt{border:1px solid var(--line);background:var(--panel);border-radius:11px;padding:12px 13px;text-align:left;transition:all .15s;display:flex;flex-direction:column;gap:3px}
+.opt:hover{border-color:var(--ink3);background:var(--paper)}
+.opt.on{border-color:var(--accent);background:var(--accentSoft);box-shadow:0 0 0 1px var(--accent) inset}
+.opt .nm{font-weight:700;font-size:14.5px}
+.opt .ds{font-size:12.5px;color:var(--ink2);line-height:1.45}
+.opt .tg{font-size:11.5px;color:var(--gold);font-weight:600}
+.grid.wide{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.skel{font-size:11.5px;color:var(--ink3);margin-top:4px;line-height:1.5}
+.paneFoot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px;flex-wrap:wrap}
+
+.olist{display:flex;flex-direction:column;gap:6px}
+.oitem{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:7px 8px 7px 10px}
+.oitem.drag{opacity:.4}
+.oitem.over{border-color:var(--accent);box-shadow:0 -2px 0 var(--accent)}
+.handle{cursor:grab;color:var(--ink3);font-size:16px;user-select:none;padding:0 2px}
+.oitem input{flex:1;border:none;background:transparent;font-weight:600;font-size:14.5px;outline:none;min-width:0}
+.oitem .no{font-size:12px;color:var(--ink3);width:18px;text-align:right}
+.addbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+
+.blocks{display:flex;flex-direction:column;gap:14px}
+.block{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);transition:border-color .15s}
+.block.focus{border-color:var(--accent)}
+.bhead{display:flex;align-items:center;gap:8px;padding:10px 14px 0}
+.bno{font-size:11.5px;font-weight:700;color:#fff;background:var(--accent);border-radius:6px;padding:1px 7px}
+body.night .bno{color:#0f1a1d}
+.btitle{flex:1;border:none;background:transparent;font-weight:700;font-size:15px;outline:none;min-width:0}
+.bcount{font-size:12px;color:var(--ink3);white-space:nowrap}
+.bhint{font-size:12.5px;color:var(--ink3);padding:2px 14px 0}
+.block textarea{display:block;width:100%;border:none;background:transparent;resize:none;outline:none;padding:10px 16px 16px;font-family:var(--read);font-size:var(--editSize);line-height:1.9;min-height:110px;overflow:hidden}
+.block textarea::placeholder{color:var(--ink3);opacity:.7}
+.notes{background:var(--goldSoft);border-color:transparent;box-shadow:none}
+.notes .bno{background:var(--gold)}
+.aibox{margin:0 14px 14px;border:1px solid var(--accent);border-radius:10px;background:var(--accentSoft);padding:10px 12px}
+.aibox .txt{white-space:pre-wrap;font-family:var(--read);font-size:15.5px;line-height:1.8;max-height:360px;overflow:auto}
+.aibox .act{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.menu{position:absolute;z-index:40;background:var(--paper);border:1px solid var(--line2);border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.15);padding:5px;min-width:190px}
+.menu button{display:block;width:100%;text-align:left;border:none;background:transparent;padding:8px 10px;border-radius:7px;font-size:13.5px}
+.menu button:hover{background:var(--panel)}
+
+.footer{position:sticky;bottom:0;background:linear-gradient(to top,var(--bg) 70%,transparent);padding:14px 28px 14px}
+.fbar{max-width:860px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:10px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.meter{flex:1;min-width:140px}
+.credit{max-width:860px;margin:6px auto 0;text-align:center;font-size:11.5px;color:var(--ink3)}
+.credit a{color:var(--ink3);text-decoration:underline;text-underline-offset:2px}
+.linkbtn{border:none;background:none;padding:0 2px;font-size:11.5px;color:var(--ink3);text-decoration:underline;text-underline-offset:2px}
+.meter .bar{height:7px;background:var(--line);border-radius:4px;overflow:hidden}
+.meter .bar i{display:block;height:100%;background:var(--good);border-radius:4px;transition:width .3s}
+.meter .bar i.warn{background:var(--warn)} .meter .bar i.bad{background:var(--bad)}
+.meter .lbl{font-size:12.5px;color:var(--ink2);margin-top:4px}
+.meter .lbl b{color:var(--ink)}
+
+/* modal */
+.scrim{position:fixed;inset:0;background:rgba(20,16,10,.38);z-index:50;display:grid;place-items:center;padding:20px}
+.modal{background:var(--paper);border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);width:min(680px,100%);max-height:88vh;display:flex;flex-direction:column}
+.mhead{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.mhead h2{margin:0;font-size:17px;flex:1}
+.mbody{padding:16px 20px;overflow:auto}
+.mfoot{padding:12px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.flist{display:flex;flex-direction:column;gap:6px}
+.fitem{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--panel)}
+.fitem .nm{flex:1;font-weight:600}
+.kind{font-size:11px;font-weight:700;border-radius:5px;padding:1px 6px;background:var(--line);color:var(--ink2)}
+.kind.s{background:var(--accentSoft);color:var(--accent)} .kind.c{background:var(--goldSoft);color:var(--gold)}
+.drop{border:2px dashed var(--line2);border-radius:14px;padding:26px;text-align:center;background:var(--panel);margin-bottom:14px}
+.drop.over{border-color:var(--accent);background:var(--accentSoft)}
+.slist .si{display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding:10px 4px;cursor:pointer}
+.slist .si:hover{background:var(--panel)}
+.slist .si .t{flex:1;min-width:0}
+.slist .si .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slist .si .t span{font-size:12.5px;color:var(--ink3)}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.setrow .l{font-weight:600}
+.setrow .l small{display:block;font-weight:400;color:var(--ink3);font-size:12px}
+textarea.code{width:100%;height:200px;font-family:ui-monospace,monospace;font-size:12px;border:1px solid var(--line2);border-radius:8px;padding:8px;background:var(--panel)}
+
+/* welcome */
+.welcome{padding:26px 22px;font-family:var(--ui);font-size:14px;line-height:1.7}
+.welcome h2{font-family:var(--read);font-size:21px;margin:0 0 6px}
+.welcome ol{padding-left:18px;color:var(--ink2)}
+.welcome .rec{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:12px 0;font-size:13px}
+
+/* pulpit */
+.pulpit{position:fixed;inset:0;z-index:60;background:#fbf8f1;color:#1d1a16;overflow:auto}
+.pulpit.dark{background:#111;color:#eee}
+.pulpit .pbar{position:sticky;top:0;display:flex;gap:8px;align-items:center;padding:10px 18px;background:inherit;border-bottom:1px solid rgba(128,128,128,.25)}
+.pulpit .pbar .sp{flex:1;font-weight:600;font-size:14px;opacity:.7}
+.pulpit .pdoc{max-width:900px;margin:0 auto;padding:30px 36px 120px;font-family:var(--read);line-height:2}
+.pulpit h1{font-size:1.5em;margin:0 0 .2em}
+.pulpit .pp{opacity:.65;font-size:.8em;margin-bottom:1.4em;font-family:var(--ui)}
+.pulpit h4{font-family:var(--ui);font-size:.62em;letter-spacing:.06em;opacity:.55;margin:1.8em 0 .3em;text-transform:none}
+.pulpit .pt{white-space:pre-wrap}
+.toast{position:fixed;left:50%;bottom:104px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:10px;font-size:13.5px;z-index:90;box-shadow:0 6px 24px rgba(0,0,0,.2);transition:opacity .3s}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line2);border-top-color:var(--accent);border-radius:50%;animation:sp 0.8s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* 휴대폰: 위쪽 단추가 화면 밖으로 나가지 않게 */
+@media (max-width:560px){.top{gap:6px;padding:0 10px}.bname{display:none}.top .btn{padding:6px 9px;font-size:13px;white-space:nowrap}.top .iconbtn{flex:none}.top .mobileSwitch{flex:none}.top .mobileSwitch button{padding:5px 8px;white-space:nowrap}.top .brand{flex:none}}
+@media (max-width:560px){#bList,#bPulpit{font-size:0!important}#bList::after{content:'목록';font-size:13px}#bPulpit::after{content:'원고';font-size:13px}#bSet .lbl{display:none}#bSet{padding:5px 8px}.top{overflow-x:auto;scrollbar-width:none}}
+@media (max-width:380px){.top .btn{padding:5px 7px;font-size:12.5px}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand"><div class="mark"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.2 5.2 7.6 4.6 4 4.8v13.4c3.6-.2 6.2.4 8 1.7 1.8-1.3 4.4-1.9 8-1.7V4.8c-3.6-.2-6.2.4-8 1.7z"/><path d="M12 6.5v13.4"/></svg></div><span class="bname">렉시오<small>읽고 · 묵상하고 · 전하다</small></span></div>
+  <div class="mobileSwitch seg"><button id="mL" class="on">성경</button><button id="mR">설교</button></div>
+  <div class="title" id="topTitle"></div>
+  <span class="status local hideNarrow" id="status"><span class="dot"></span>준비 중</span>
+  <button class="btn ghost hideNarrow" id="bLeft" title="성경 화면 넓게/좁게/접기">↔ 성경 화면</button>
+  <button class="btn" id="bList">설교 목록</button>
+  <button class="btn" id="bExport">내보내기</button>
+  <button class="btn" id="bPulpit" title="큰 글씨로 설교 원고 보기 (강단·아이패드)">설교 원고 보기</button>
+  <button class="btn" id="bSet" title="설정 · 성경 자료 · 화면 꾸미기"><span class="gear">⚙︎</span><span class="lbl">설정</span></button>
+</div>
+<div class="main" id="main">
+  <section class="left" id="left"></section>
+  <section class="right" id="right">
+    <div class="rscroll" id="rscroll"><div class="rwrap" id="rwrap"></div></div>
+    <div class="footer" id="footer"></div>
+  </section>
+</div>
+<input type="file" id="fileIn" multiple accept=".bdb,.sdb,.cdb" class="hidden">
+<input type="file" id="bakIn" accept=".json,application/json" class="hidden">
+
+<script>
+"use strict";
+/* ============ 기본 데이터 ============ */
+const BOOKS=[["창세기","창",50],["출애굽기","출",40],["레위기","레",27],["민수기","민",36],["신명기","신",34],["여호수아","수",24],["사사기","삿",21],["룻기","룻",4],["사무엘상","삼상",31],["사무엘하","삼하",24],["열왕기상","왕상",22],["열왕기하","왕하",25],["역대상","대상",29],["역대하","대하",36],["에스라","스",10],["느헤미야","느",13],["에스더","에",10],["욥기","욥",42],["시편","시",150],["잠언","잠",31],["전도서","전",12],["아가","아",8],["이사야","사",66],["예레미야","렘",52],["예레미야애가","애",5],["에스겔","겔",48],["다니엘","단",12],["호세아","호",14],["요엘","욜",3],["아모스","암",9],["오바댜","옵",1],["요나","욘",4],["미가","미",7],["나훔","나",3],["하박국","합",3],["스바냐","습",3],["학개","학",2],["스가랴","슥",14],["말라기","말",4],["마태복음","마",28],["마가복음","막",16],["누가복음","눅",24],["요한복음","요",21],["사도행전","행",28],["로마서","롬",16],["고린도전서","고전",16],["고린도후서","고후",13],["갈라디아서","갈",6],["에베소서","엡",6],["빌립보서","빌",4],["골로새서","골",4],["데살로니가전서","살전",5],["데살로니가후서","살후",3],["디모데전서","딤전",6],["디모데후서","딤후",4],["디도서","딛",3],["빌레몬서","몬",1],["히브리서","히",13],["야고보서","약",5],["베드로전서","벧전",5],["베드로후서","벧후",3],["요한일서","요일",5],["요한이서","요이",1],["요한삼서","요삼",1],["유다서","유",1],["요한계시록","계",22]];
+
+const PLACES=[["주일예배",30],["새벽기도",15],["수요예배",25],["금요예배",35],["교구예배",25],["직원예배",15],["사역팀",15],["심방",10],["장례예배",10],["이사·개업 예배",10],["결혼 예식",15],["사랑방·구역",15],["제자훈련",40],["기타",20]];
+
+const TYPES=[
+ {id:"expo",nm:"강해 설교",ds:"본문의 흐름과 의미를 따라가며 풀어냄",place:"금요예배",st:"expo"},
+ {id:"topic",nm:"주제 설교",ds:"한 주제를 여러 본문으로 세움",place:"주일예배",st:"three"},
+ {id:"feast",nm:"절기 설교",ds:"성탄·부활·맥추·추수감사·송구영신 등",place:"주일예배",st:"three"},
+ {id:"dawn",nm:"새벽 말씀",ds:"짧고 선명한 한 가지 메시지",place:"새벽기도",st:"one"},
+ {id:"visit",nm:"심방 설교",ds:"가정 형편에 맞춘 위로와 권면",place:"심방",st:"one"},
+ {id:"sick",nm:"환우 심방",ds:"고통 중 하나님의 임재와 위로",place:"심방",st:"comfort"},
+ {id:"move",nm:"이사·개업 심방",ds:"감사와 축복, 새 출발의 당부",place:"이사·개업 예배",st:"bless"},
+ {id:"funeral",nm:"장례(위로) 설교",ds:"부활의 소망과 유가족 위로",place:"장례예배",st:"comfort"},
+ {id:"wedding",nm:"결혼 주례",ds:"언약으로서의 결혼과 당부",place:"결혼 예식",st:"three"},
+ {id:"sarang",nm:"사랑방·구역 설교",ds:"소그룹을 위한 짧은 말씀",place:"사랑방·구역",st:"one"},
+ {id:"share",nm:"구역 나눔",ds:"질문 중심으로 함께 나누는 말씀",place:"사랑방·구역",st:"share"},
+ {id:"disciple",nm:"제자훈련",ds:"교리와 삶을 연결하는 훈련 강의",place:"제자훈련",st:"share"},
+ {id:"officer",nm:"직분자 설교",ds:"장로·권사·집사 직분과 섬김",place:"주일예배",st:"three"},
+ {id:"doctrine",nm:"교리 설교",ds:"요리문답·신앙고백을 본문과 함께",place:"주일예배",st:"deductive"}
+];
+
+const STRUCTS=[
+ {id:"expo",nm:"강해식 (본문 흐름)",ds:"본문 단락의 흐름을 따라 해설하고 중심 메시지로 모음",blocks:[["서론","본문으로 들어가는 문을 엽니다. 청중의 삶과 본문을 잇는 질문이나 장면"],["본문의 배경과 문맥","저자·수신자·역사적 상황, 앞뒤 문맥에서 이 본문의 자리"],["본문 해설 1","첫 단락: 관찰 → 원어·구조 → 의미"],["본문 해설 2","둘째 단락: 관찰 → 원어·구조 → 의미"],["본문 해설 3","셋째 단락: 관찰 → 원어·구조 → 의미"],["중심 메시지","본문 전체가 말하는 한 문장 — 그리스도와 복음 안에서"],["적용","오늘 우리 삶에서 순종할 구체적인 모습"],["결론","핵심을 다시 붙들고 결단으로 초청"],["기도","설교를 마무리하는 기도"]]},
+ {id:"three",nm:"3대지 (연역)",ds:"중심 명제를 먼저 세우고 세 대지로 증명·전개",blocks:[["서론","주제를 열고 중심 명제를 제시합니다"],["1대지","첫째 요점 — 본문 근거, 설명, 예화"],["2대지","둘째 요점 — 본문 근거, 설명, 예화"],["3대지","셋째 요점 — 본문 근거, 설명, 예화"],["결론","세 대지를 묶어 중심 명제를 다시 선포"],["적용","삶의 결단"],["기도",""]]},
+ {id:"two",nm:"2대지",ds:"대조나 짝을 이루는 두 요점 (예: 직설-명령, 은혜-응답)",blocks:[["서론",""],["1대지","첫째 요점"],["2대지","둘째 요점"],["결론과 적용",""],["기도",""]]},
+ {id:"one",nm:"원 포인트 (1대지)",ds:"한 가지 메시지를 깊고 선명하게 — 새벽·심방·구역에 적합",blocks:[["여는 말씀","짧은 도입 — 형편과 본문을 잇기"],["말씀의 핵심","본문이 주는 한 가지 메시지와 그 근거"],["적용과 권면","가정·개인에게 주는 구체적 권면"],["기도","축복과 위로의 기도"]]},
+ {id:"deductive",nm:"연역적 (명제 → 전개)",ds:"결론(명제)을 먼저 말하고 근거와 설명으로 풀어감",blocks:[["서론과 명제","오늘 말씀의 결론을 먼저 선포"],["근거 1","성경적 근거와 설명"],["근거 2","성경적 근거와 설명"],["교리적 정리","신앙고백·요리문답과의 연결"],["적용",""],["결론",""],["기도",""]]},
+ {id:"inductive",nm:"귀납적 (질문 → 발견)",ds:"질문과 관찰을 따라가다 마지막에 중심 진리에 도달",blocks:[["서론 — 질문 던지기","청중이 품고 있는 질문이나 문제"],["관찰 1","본문에서 보이는 첫 실마리"],["관찰 2","둘째 실마리"],["관찰 3","셋째 실마리"],["발견 — 중심 진리","관찰이 모여 드러나는 메시지"],["적용",""],["결론",""],["기도",""]]},
+ {id:"story",nm:"스토리 (내러티브)",ds:"갈등 → 심화 → 반전 → 복음 → 결말 (로우리 고리)",blocks:[["갈등 제시","평형이 깨지는 장면 — 이야기나 삶의 문제"],["갈등의 심화","왜 그런가? 인간의 해결이 막히는 지점"],["실마리 — 복음의 반전","본문이 보여 주는 뜻밖의 하나님"],["복음의 경험","그리스도 안에서 새롭게 보이는 현실"],["결말과 기대","그래서 우리는 어떻게 살 것인가"],["기도",""]]},
+ {id:"problem",nm:"문제 → 해결",ds:"삶의 문제를 진단하고 성경의 해답과 실천으로",blocks:[["문제 제기",""],["원인 진단","성경이 말하는 문제의 뿌리"],["말씀의 해답","본문이 주는 답 — 그리스도 안에서"],["실천","구체적인 순종의 걸음"],["결론과 기도",""]]},
+ {id:"comfort",nm:"위로 구조",ds:"공감 → 약속 → 소망 → 남은 삶 (장례·환우)",blocks:[["위로와 공감","슬픔과 아픔을 함께 지는 말"],["말씀의 약속","본문이 주는 하나님의 약속"],["소망","부활과 영원한 생명, 주님의 임재"],["남은 자의 삶","유가족·환우·가족에게 주는 권면"],["위로의 기도",""]]},
+ {id:"bless",nm:"축복 구조",ds:"감사 → 말씀 → 약속 → 당부 → 축복기도 (이사·개업)",blocks:[["감사","인도하신 하나님께 감사"],["말씀","본문의 의미"],["축복의 약속","이 가정·일터에 주시는 약속"],["당부","새 출발에 붙들 신앙의 원칙"],["축복기도",""]]},
+ {id:"share",nm:"나눔식 (질문 중심)",ds:"관찰·해석·적용 질문으로 함께 나눔 (구역·제자훈련)",blocks:[["마음 열기","가벼운 나눔 질문 1개"],["본문 읽기와 관찰","무엇이 보이나요? 관찰 질문"],["해석과 설명","인도자가 짧게 정리할 핵심"],["적용 나눔","삶에 적용할 질문 2~3개"],["기도 제목 나눔",""],["함께 기도",""]]}
+];
+
+const BLOCK_LIB=["서론","본문의 배경과 문맥","대지","본문 해설","예화","교리적 정리","중심 메시지","적용","나눔 질문","결론","기도","광고·당부","자유 블록"];
+
+/* ============ 유틸 ============ */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const decName=s=>s.replace(/#U([0-9a-fA-F]{4})/g,(m,h)=>String.fromCharCode(parseInt(h,16)));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const ref=(b,c,v1,v2)=>BOOKS[b-1][1]+" "+c+":"+v1+(v2&&v2!==v1?"-"+v2:"");
+const refLong=(b,c,v1,v2)=>BOOKS[b-1][0]+" "+c+":"+v1+(v2&&v2!==v1?"-"+v2:"");
+function toast(msg,ms=2200){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>{t.style.opacity=0;setTimeout(()=>t.remove(),300)},ms)}
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const cnt=s=>(s||"").replace(/\s/g,"").length;
+
+/* ============ 설정 ============ */
+const S=Object.assign({baptism:"세례",readFont:"Noto Serif KR",readSize:18,editSize:17,studySize:15,readLH:1.85,theme:"",leftW:33.3,studyH:44,cpm:280,night:false,leftMode:0},ls.get("sw.settings",{}));
+function applySettings(){
+  const r=document.documentElement.style;
+  r.setProperty("--read",`'${S.readFont}',serif`);
+  r.setProperty("--readSize",S.readSize+"px");r.setProperty("--editSize",S.editSize+"px");r.setProperty("--studySize",S.studySize+"px");r.setProperty("--readLH",S.readLH);
+  r.setProperty("--lw",(S.leftMode===1?50:S.leftW)+"%");r.setProperty("--sh",S.studyH+"%");
+  ["white","sepia","green","navy"].forEach(t=>document.body.classList.toggle("th-"+t,S.theme===t));
+  document.body.classList.toggle("night",!!S.night);
+  const m=$("#main");m.classList.toggle("wideLeft",S.leftMode===1);m.classList.toggle("noLeft",S.leftMode===2);
+  ls.set("sw.settings",S);
+}
+
+/* ============ Claude 기능 (저장·다운로드·AI) ============ */
+const SITE="https://shepherdsdesk.github.io/lexio/";   // 홈페이지 주소 (저장소가 다르면 여기만 바꾸세요)
+const PACK_URL="https://github.com/shepherdsdesk/lexio/releases/latest/download/Lexio-bible-pack.zip";
+const IS_APP=!!window.lexioApp||location.protocol==="app:";
+const canDL=()=>!!CAP.dl||IS_APP||!!window.LX_HOST||!(window.claude&&window.claude.use);
+const ASSET=window.LX_ASSET||"";
+async function cap(name){if(window.LX_HOST)return window.LX_HOST(name);if(IS_APP)return null;try{for(let i=0;i<20&&!(window.claude&&window.claude.use);i++)await wait(150);if(!(window.claude&&window.claude.use))return null;return await window.claude.use(name)}catch(e){return null}}
+const CAP={db:null,user:null,dl:null,ai:null,uid:null};
+
+/* ============ IndexedDB (성경 파일은 이 기기 안에만) ============ */
+const IDB={db:null,
+ open(){return new Promise((res)=>{try{const q=indexedDB.open("sermon-workshop",1);q.onupgradeneeded=()=>{q.result.createObjectStore("files",{keyPath:"name"})};q.onsuccess=()=>{this.db=q.result;res(true)};q.onerror=()=>res(false)}catch(e){res(false)}})},
+ tx(mode){return this.db.transaction("files",mode).objectStore("files")},
+ all(){return new Promise(res=>{if(!this.db)return res([]);try{const q=this.tx("readonly").getAll();q.onsuccess=()=>res(q.result||[]);q.onerror=()=>res([])}catch(e){res([])}})},
+ get(n){return new Promise(res=>{if(!this.db)return res(null);try{const q=this.tx("readonly").get(n);q.onsuccess=()=>res(q.result||null);q.onerror=()=>res(null)}catch(e){res(null)}})},
+ put(o){return new Promise(res=>{if(!this.db)return res(false);try{const q=this.tx("readwrite").put(o);q.onsuccess=()=>res(true);q.onerror=()=>res(false)}catch(e){res(false)}})},
+ del(n){return new Promise(res=>{if(!this.db)return res(false);try{const q=this.tx("readwrite").delete(n);q.onsuccess=()=>res(true);q.onerror=()=>res(false)}catch(e){res(false)}})}
+};
+
+/* ============ SQL ============ */
+let SQL=null;
+async function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
+async function initSQL(){
+  if(SQL)return SQL;
+  try{await loadScript(ASSET+"sql-wasm.js");SQL=await initSqlJs({locateFile:f=>ASSET+f});return SQL}catch(e){console.warn("wasm 실패, asm으로",e)}
+  try{window.initSqlJs=undefined;await loadScript(ASSET+"sql-asm-memory-growth.js");SQL=await initSqlJs();return SQL}catch(e){console.error(e);return null}
+}
+
+/* 자료 목록 */
+const LIB=[]; // {name,label,kind:'b'|'s'|'c',size,bytes,db}
+function kindOf(n){const e=n.split(".").pop().toLowerCase();return e==="sdb"?"s":e==="cdb"?"c":"b"}
+// 맥에서 고른 파일은 한글 이름이 자모로 분리(NFD)되어 오므로 완성형(NFC)으로 맞춥니다
+const nfc=s=>typeof s==="string"?s.normalize("NFC"):s;
+function labelOf(n){return nfc(decName(n)).replace(/\.(bdb|sdb|cdb)$/i,"")}
+function isOrig(it){return /BHS|LXX|SBL|WLC|Byz|히브리어|헬라어|^TR\b/i.test(it.label)}
+function openDB(it){if(!it.db){if(!it.bytes)throw new Error("not loaded: "+it.label);it.db=new SQL.Database(new Uint8Array(it.bytes));it.bytes=null}return it.db}
+const isOpen=it=>!!(it&&(it.db||it.bytes));
+const saveMeta=()=>ls.set("sw.libmeta",LIB.map(({name,label,kind,size})=>({name,label,kind,size})));
+function neededLabels(){const s=LIB.find(x=>x.kind==="s");const set=new Set([ST.prim,plainLabel(),s&&s.label]);if(ST.mode==="cmp")ST.cmp.forEach(l=>set.add(l));if(ST.tab==="cmt"&&!ST.studyMin&&ST.cmt)set.add(ST.cmt);set.delete(undefined);set.delete(null);return set}
+let needBusy=null;
+async function need(extra){
+  const want=neededLabels();(extra||[]).forEach(l=>want.add(l));
+  for(const l of want){const it=byLabel(l);if(!it||isOpen(it))continue;const rec=await IDB.get(it.name);if(rec&&rec.bytes){it.bytes=rec.bytes}else{const i=LIB.indexOf(it);if(i>=0)LIB.splice(i,1);saveMeta()}}
+  // 지금 쓰지 않는 자료는 닫아서 메모리를 비웁니다
+  for(const it of LIB){if(!want.has(it.label)&&isOpen(it)){try{it.db&&it.db.close()}catch(e){}it.db=null;it.bytes=null}}
+}
+const missing=extra=>{const want=neededLabels();(extra||[]).forEach(l=>want.add(l));return[...want].some(l=>{const it=byLabel(l);return it&&!isOpen(it)})};
+// 베들레헴 한글 성경은 '세례'가 '침례'로 바뀌어 있어, 원문(대한성서공회) 표기로 되돌려 보여 줍니다.
+// 킹흠정역·한글킹은 원래 '침례'를 쓰는 번역이라 그대로 둡니다.
+const needsBaptismFix=it=>S.baptism==="세례"&&it.kind!=="c"&&/[가-힣]/.test(it.label)&&!/킹흠정|한글킹/.test(it.label);
+const fixBaptism=v=>typeof v==="string"?v.replace(/침례/g,"세례").replace(/浸禮/g,"洗禮"):v;
+function q(it,sql,params){if(!isOpen(it))return[];const st=openDB(it).prepare(sql);st.bind(params||[]);const out=[];const fx=needsBaptismFix(it);while(st.step()){const r=st.get();out.push(fx?r.map(fixBaptism):r)}st.free();return out}
+const bibles=()=>LIB.filter(x=>x.kind!=="c");
+const comms=()=>LIB.filter(x=>x.kind==="c");
+const byLabel=l=>LIB.find(x=>x.label===l);
+
+/* ============ 원어 사전 ============ */
+const LEX={H:null,G:null,loading:null};
+function loadLex(){if(LEX.loading)return LEX.loading;LEX.loading=Promise.all([fetch(ASSET+"lex-heb.json").then(r=>r.json()),fetch(ASSET+"lex-grk.json").then(r=>r.json())]).then(([h,g])=>{LEX.H=h;LEX.G=g}).catch(e=>console.warn("사전 로드 실패",e));return LEX.loading}
+
+/* 스트롱 색인 (개역개정S에서) */
+const IDX={ready:false,building:false,occ:{},ko:{},label:null};
+function parseTagged(t){
+  const out=[];const re=/<W([HG])\s*(\d+)[a-z]?[^>]*>/g;let last=0,m;
+  while((m=re.exec(t))){out.push({w:t.slice(last,m.index),s:m[1]+(+m[2])});last=re.lastIndex}
+  if(last<t.length)out.push({w:t.slice(last),s:null});return out;
+}
+const cleanTagged=t=>t.replace(/<W[^>]*>/g,"");
+async function buildIndex(){
+  const it=LIB.find(x=>x.kind==="s");if(!it||IDX.building||(IDX.ready&&IDX.label===it.label))return;
+  IDX.building=true;if(!isOpen(it))await need();await wait(30);if(!isOpen(it)){IDX.building=false;return}
+  const occ={},ko={};
+  const rows=q(it,"select book,chapter,verse,btext from Bible");
+  for(const [b,c,v,t] of rows){
+    for(const tk of parseTagged(t||"")){
+      if(!tk.s||/^[HG]0$/.test(tk.s))continue;
+      (occ[tk.s]||(occ[tk.s]=[])).push(b*1000000+c*1000+v);
+      const w=tk.w.trim().replace(/[.,!?;:"'“”‘’()「」\[\]·]/g,"");
+      if(w){const k=ko[tk.s]||(ko[tk.s]={});k[w]=(k[w]||0)+1}
+    }
+  }
+  for(const k in occ)occ[k]=[...new Set(occ[k])];
+  Object.assign(IDX,{occ,ko,ready:true,building:false,label:it.label});
+}
+
+/* ============ 상태 ============ */
+const ST=Object.assign({book:50,ch:4,prim:null,cmp:[],mode:"single",sel:null,word:null,tab:"orig",cmt:null,cmtIdx:0,studyMin:false},ls.get("sw.view",{}));
+ST.sel=null;
+const saveView=()=>ls.set("sw.view",{book:ST.book,ch:ST.ch,prim:ST.prim,cmp:ST.cmp,mode:ST.mode,tab:ST.tab,cmt:ST.cmt,studyMin:ST.studyMin});
+
+/* ============ 왼쪽: 성경 ============ */
+function renderLeft(){
+  const L=$("#left");
+  if(!SQL||!bibles().length){L.innerHTML=welcomeHTML();bindWelcome();return}
+  if(!ST.prim||!byLabel(ST.prim)){const s=LIB.find(x=>x.kind==="s")||bibles().find(x=>/개역개정/.test(x.label))||bibles().find(x=>/개역한글|새번역|우리말|쉬운|현대인|공동|한글/.test(x.label))||bibles()[0];ST.prim=s.label}
+  ST.cmp=ST.cmp.filter(l=>byLabel(l)&&l!==ST.prim);
+  if(missing()){L.innerHTML=`<div class="empty" style="margin-top:40px"><span class="spin"></span> 자료를 여는 중…</div>`;need().then(()=>{if(!missing())renderLeft()});return}
+  const bk=BOOKS[ST.book-1];
+  L.innerHTML=`
+  <div class="lhead">
+    <div class="row">
+      <button class="iconbtn" id="pv" title="이전 장">‹</button>
+      <select class="sel" id="bkSel">${BOOKS.map((b,i)=>`<option value="${i+1}" ${i+1===ST.book?"selected":""}>${b[0]}</option>`).join("")}</select>
+      <select class="sel" id="chSel">${Array.from({length:bk[2]},(_,i)=>`<option ${i+1===ST.ch?"selected":""}>${i+1}</option>`).join("")}</select><span class="muted small">장</span>
+      <button class="iconbtn" id="nx" title="다음 장">›</button>
+      <span style="flex:1"></span>
+      <button class="iconbtn" id="findBtn" title="성경 단어 검색"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
+      <div class="seg"><button data-m="single" class="${ST.mode==="single"?"on":""}">본문</button><button data-m="cmp" class="${ST.mode==="cmp"?"on":""}">대조</button></div>
+    </div>
+    <div class="row">
+      <select class="sel" id="primSel" title="기본 번역본">${bibles().map(x=>`<option ${x.label===ST.prim?"selected":""} value="${esc(x.label)}">${esc(x.label)}${x.kind==="s"?" · 원어연결":""}</option>`).join("")}</select>
+      ${ST.mode==="cmp"?`<span class="muted small">함께 보기</span>`:""}
+    </div>
+    ${ST.mode==="cmp"?`<div class="chips" id="cmpChips">${bibles().filter(x=>x.label!==ST.prim).map(x=>`<button class="chip ${ST.cmp.includes(x.label)?"on":""}" data-l="${esc(x.label)}">${esc(x.label)}</button>`).join("")}</div>`:""}
+  </div>
+  <div class="ltext" id="ltext"></div>
+  <div class="selbar hidden" id="selbar"></div>
+  <div class="study ${ST.studyMin?"min":""}" id="study">
+    <div class="sgrip" id="sgrip" title="끌어서 높이 조절"></div>
+    <div class="stabs">
+      <button class="t ${ST.tab==="orig"?"on":""}" data-t="orig">원어</button>
+      <button class="t ${ST.tab==="occ"?"on":""}" data-t="occ">용례·관련 구절</button>
+      <button class="t ${ST.tab==="cmt"?"on":""}" data-t="cmt">주석</button>
+      <button class="t ${ST.tab==="find"?"on":""}" data-t="find">검색</button>
+      <span style="flex:1"></span>
+      <button class="zbtn" data-zs="-1" title="연구 창 글자 작게">가−</button><button class="zbtn" data-zs="1" title="연구 창 글자 크게">가+</button>
+      <button class="iconbtn" id="stMin" title="접기/펴기">${ST.studyMin?"▴":"▾"}</button>
+    </div>
+    <div class="sbody" id="sbody"></div>
+  </div>`;
+  $("#bkSel").onchange=e=>{ST.book=+e.target.value;ST.ch=1;go()};
+  $("#chSel").onchange=e=>{ST.ch=+e.target.value;go()};
+  $("#pv").onclick=()=>step(-1);$("#nx").onclick=()=>step(1);
+  $("#findBtn").onclick=()=>{ST.tab="find";ST.studyMin=false;saveView();renderStudyTabs();renderStudy();setTimeout(()=>{const i=$("#fq");i&&i.focus()},30)};
+  L.querySelectorAll(".seg button[data-m]").forEach(b=>b.onclick=()=>{ST.mode=b.dataset.m;if(ST.mode==="cmp"&&!ST.cmp.length){ST.cmp=bibles().filter(x=>x.label!==ST.prim&&/새번역|ESV|BHS/.test(x.label)).slice(0,3).map(x=>x.label)}saveView();renderLeft()});
+  $("#primSel").onchange=e=>{ST.prim=e.target.value;saveView();renderLeft()};
+  L.querySelectorAll("#cmpChips .chip").forEach(c=>c.onclick=()=>{const l=c.dataset.l;ST.cmp=ST.cmp.includes(l)?ST.cmp.filter(x=>x!==l):[...ST.cmp,l];saveView();renderLeft()});
+  L.querySelectorAll(".stabs .t").forEach(b=>b.onclick=()=>{ST.tab=b.dataset.t;ST.studyMin=false;saveView();renderStudyTabs();renderStudy()});
+  L.querySelectorAll("[data-zs]").forEach(b=>b.onclick=()=>{S.studySize=Math.max(12,Math.min(24,S.studySize+(+b.dataset.zs)));applySettings();toast("연구 창 글자 "+S.studySize,900)});
+  bindStudyGrip();
+  $("#stMin").onclick=()=>{ST.studyMin=!ST.studyMin;saveView();$("#study").classList.toggle("min",ST.studyMin);$("#stMin").textContent=ST.studyMin?"▴":"▾"};
+  renderText();renderSelbar();renderStudy();
+}
+function renderStudyTabs(){document.querySelectorAll(".stabs .t").forEach(b=>b.classList.toggle("on",b.dataset.t===ST.tab));$("#study").classList.toggle("min",ST.studyMin)}
+function step(d){let b=ST.book,c=ST.ch+d;if(c<1){b--;if(b<1)return;c=BOOKS[b-1][2]}if(c>BOOKS[b-1][2]){b++;if(b>66)return;c=1}ST.book=b;ST.ch=c;go()}
+function go(v){ST.sel=v?{a:v,b:v}:null;saveView();renderLeft();if(v)setTimeout(()=>{const el=document.querySelector(`[data-v="${v}"]`);el&&el.scrollIntoView({block:"center"})},30)}
+function chapterRows(label,b,c){const it=byLabel(label);if(!it)return[];try{return q(it,"select verse,btext from Bible where book=? and chapter=? order by verse",[b,c])}catch(e){return[]}}
+function verseText(label,b,c,v){const it=byLabel(label);if(!it)return"";if(it.kind==="s"){const pl=plainLabel();if(pl){const t=verseText(pl,b,c,v);if(t)return t}}const r=q(it,"select btext from Bible where book=? and chapter=? and verse=?",[b,c,v]);return r.length?stripTags(it.kind==="s"?cleanTagged(r[0][0]):r[0][0]):""}
+function scriptClass(label,b){const it=byLabel(label);if(!it||!isOrig(it))return"";return b<=39?"heb":"grk"}
+const PARTICLE=new Set("에 에게 에서 와 과 으로 로 께 께서 을 를 의 은 는 이 가 도 만 까지 부터 하며 하고 하니 하여 하라 하리라 하시니라 하사 들 이라 라 니라 이니라 이요 요 하는 한 할 함 함이라 케 게 지 지라 리라 하시고 하시며 되 된 될 처럼 같이 보다 마다 이니 니".split(" "));
+const plainLabel=()=>{const x=LIB.find(x=>x.kind==="b"&&/^개역개정$/.test(x.label))||LIB.find(x=>x.kind==="b"&&/^개역개정/.test(x.label)&&!/국한문/.test(x.label));return x&&x.label};
+const stripTags=t=>String(t||"").split(/<br\s*\/?>/i)[0].replace(/<sup>.*?<\/sup>/gi,"").replace(/<br\s*\/?>/gi," ").replace(/<[^>]+>/g,"").replace(/\s+/g," ").trim();
+function tokSpan(tk,inner){return tk&&tk.s&&!/^[HG]0$/.test(tk.s)?`<span class="w${ST.word===tk.s?" act":""}" data-s="${tk.s}">${inner}</span>`:inner}
+function wordsHTML(t,plain){
+  const toks=parseTagged(t);
+  if(plain){
+    const pl=stripTags(plain);const ns=x=>x.replace(/\s/g,"");
+    if(ns(pl)===ns(toks.map(x=>x.w).join(""))){
+      const owner=[];toks.forEach((tk,i)=>{for(const c of ns(tk.w))owner.push(i)});
+      const chars=[];let k=0;for(const c of pl){if(/\s/.test(c))chars.push({c,o:null});else chars.push({c,o:owner[k++]})}
+      for(let i=0;i<chars.length;i++)if(chars[i].o===null){let a=i-1,b=i+1;while(a>=0&&chars[a].o===null)a--;while(b<chars.length&&chars[b].o===null)b++;if(a>=0&&b<chars.length&&chars[a].o===chars[b].o)chars[i].o=chars[a].o;else chars[i].o=-1}
+      let out="",cur=null,buf="";const flush=()=>{if(buf)out+=cur>=0?tokSpan(toks[cur],esc(buf)):esc(buf);buf=""};
+      for(const ch of chars){if(ch.o!==cur){flush();cur=ch.o}buf+=ch.c}flush();return out;
+    }
+  }
+  // 정렬할 원문이 없으면: 조사·어미 앞 공백을 붙여 읽기 좋게
+  return toks.map((tk,i)=>{let w=tk.w;if(i>0&&/^\s/.test(w)&&PARTICLE.has(w.trim().replace(/[.,!?;:]+$/,"")))w=w.replace(/^\s+/,"");return tokSpan(tk,esc(w))}).join("");
+}
+function bibleHTML(label,t,plain){const it=byLabel(label);if(!it)return"";if(it.kind==="s")return wordsHTML(t||"",plain);const parts=String(t||"").split(/<br\s*\/?>/i);const rest=parts.slice(1).join(" ").trim();return sanitize(parts[0])+(rest?`<div class="fn">${sanitize(rest)}</div>`:"")}
+function renderText(){
+  const box=$("#ltext");const prim=byLabel(ST.prim);const rows=chapterRows(ST.prim,ST.book,ST.ch);
+  let h=`<div class="chTitle">${BOOKS[ST.book-1][0]} ${ST.ch}장</div>`;
+  if(!rows.length)h+=`<div class="empty">이 번역본에는 이 장이 없습니다.</div>`;
+  const inSel=v=>ST.sel&&v>=Math.min(ST.sel.a,ST.sel.b)&&v<=Math.max(ST.sel.a,ST.sel.b);
+  const pm=prim.kind==="s"&&plainLabel()?Object.fromEntries(chapterRows(plainLabel(),ST.book,ST.ch)):{};
+  if(ST.mode==="single"){
+    const cls=scriptClass(ST.prim,ST.book);
+    h+=`<div class="${cls}">`+rows.map(([v,t])=>`<div class="verse ${inSel(v)?"sel":""}" data-v="${v}"><span class="vn" data-v="${v}">${v}</span>${bibleHTML(ST.prim,t,pm[v])}</div>`).join("")+`</div>`;
+  }else{
+    const others=ST.cmp.map(l=>({l,map:Object.fromEntries(chapterRows(l,ST.book,ST.ch)),cls:scriptClass(l,ST.book)}));
+    h+=rows.map(([v,t])=>`<div class="cmpv ${inSel(v)?"sel":""}" data-v="${v}">
+      <div class="cmpLine"><div class="cmpLab"><span class="vn" data-v="${v}" style="font-size:12px">${v}절</span><br>${esc(ST.prim)}</div><div class="${scriptClass(ST.prim,ST.book)}">${bibleHTML(ST.prim,t,pm[v])}</div></div>
+      ${others.map(o=>`<div class="cmpLine"><div class="cmpLab">${esc(o.l)}</div><div class="${o.cls}" ${o.cls==="heb"?'dir="rtl"':""}>${o.map[v]!=null?(byLabel(o.l).kind==="s"?esc(cleanTagged(o.map[v])):bibleHTML(o.l,o.map[v])):"—"}</div></div>`).join("")}
+    </div>`).join("");
+  }
+  box.innerHTML=h;
+  box.onclick=e=>{
+    const w=e.target.closest(".w");if(w){ST.word=w.dataset.s;box.querySelectorAll(".w.act").forEach(x=>x.classList.remove("act"));box.querySelectorAll(`.w[data-s="${ST.word}"]`).forEach(x=>x.classList.add("act"));const vv=+w.closest("[data-v]").dataset.v;if(!ST.sel)ST.sel={a:vv,b:vv};if(ST.tab==="cmt")ST.tab="orig";ST.studyMin=false;renderStudyTabs();renderStudy();markSel();renderSelbar();return}
+    const vn=e.target.closest(".vn")||e.target.closest(".verse,.cmpv");if(!vn)return;
+    const v=+vn.dataset.v;
+    if(ST.sel&&ST.sel.a===ST.sel.b&&ST.sel.a===v&&e.target.closest(".vn"))ST.sel=null;
+    else if(ST.sel&&(e.shiftKey||ST.extend))ST.sel.b=v,ST.extend=false;
+    else ST.sel={a:v,b:v};
+    markSel();renderSelbar();if(ST.tab==="cmt")renderStudy();
+  };
+}
+function markSel(){document.querySelectorAll("#ltext [data-v].verse,#ltext .cmpv").forEach(el=>{const v=+el.dataset.v;el.classList.toggle("sel",!!ST.sel&&v>=Math.min(ST.sel.a,ST.sel.b)&&v<=Math.max(ST.sel.a,ST.sel.b))})}
+function selRange(){if(!ST.sel)return null;return{b:ST.book,c:ST.ch,v1:Math.min(ST.sel.a,ST.sel.b),v2:Math.max(ST.sel.a,ST.sel.b)}}
+function renderSelbar(){
+  const bar=$("#selbar");const r=selRange();if(!r){bar.classList.add("hidden");return}
+  bar.classList.remove("hidden");
+  bar.innerHTML=`<b>${ref(r.b,r.c,r.v1,r.v2)}</b>
+   <button class="btn sm" id="sbExt">${ST.extend?"끝 절을 누르세요":"범위 늘리기"}</button>
+   <button class="btn sm primary" id="sbSet">설교 본문으로</button>
+   <button class="btn sm" id="sbIns">설교에 넣기</button>
+   <button class="btn sm ghost" id="sbX">✕</button>`;
+  $("#sbExt").onclick=()=>{ST.extend=true;renderSelbar()};
+  $("#sbSet").onclick=()=>{setPassage(r)};
+  $("#sbIns").onclick=()=>{insertText(passageQuote(r))};
+  $("#sbX").onclick=()=>{ST.sel=null;ST.extend=false;markSel();renderSelbar()};
+}
+function passageText(r,label){label=label||ST.prim;const out=[];for(let v=r.v1;v<=r.v2;v++){const t=verseText(label,r.b,r.c,v);if(t)out.push(t)}return out}
+function passageQuote(r){const ts=passageText(r);return `「${ts.join(" ")}」(${ref(r.b,r.c,r.v1,r.v2)})`}
+
+/* 연구 패널 */
+function renderStudy(){
+  const B=$("#sbody");if(!B)return;
+  if(ST.tab==="cmt")return renderCmt(B);
+  if(ST.tab==="find")return renderFind(B);
+  if(!ST.word){B.innerHTML=`<div class="empty">${LIB.some(x=>x.kind==="s")?"본문의 <b>단어</b>를 누르면 원어 뜻, 개역개정 번역 용례, 같은 원어가 쓰인 구절이 여기에 나타납니다.":"단어별 원어 연결은 <b>개역개정S</b>(스트롱 코드) 파일을 불러오면 쓸 수 있습니다."}</div>`;return}
+  const s=ST.word,L=s[0],n=+s.slice(1);
+  if(ST.tab==="orig"){
+    const e=(L==="H"?LEX.H:LEX.G)||{};const d=e[n];
+    const lnk=L==="H"?[["BibleHub",`https://biblehub.com/hebrew/${n}.htm`],["Blue Letter Bible",`https://www.blueletterbible.org/lexicon/h${n}/kjv/wlc/0-1/`],["STEP Bible",`https://www.stepbible.org/?q=strong=H${n}`]]:[["BibleHub",`https://biblehub.com/greek/${n}.htm`],["Blue Letter Bible",`https://www.blueletterbible.org/lexicon/g${n}/kjv/tr/0-1/`],["STEP Bible",`https://www.stepbible.org/?q=strong=G${n}`]];
+    const ko=IDX.ko[s]?Object.entries(IDX.ko[s]).sort((a,b)=>b[1]-a[1]).slice(0,14):[];
+    const total=IDX.occ[s]?IDX.occ[s].length:0;
+    B.innerHTML=`
+     <div><span class="sn">${L==="H"?"히브리어":"헬라어"} ${s}</span><span class="muted small">${total?total+"개 구절에 나옴":""}</span></div>
+     ${d?`<div class="lemma ${L==="H"?"heb":"grk"}" style="text-align:left;direction:${L==="H"?"rtl":"ltr"};display:inline-block">${esc(d[0])}</div>
+     <div class="xlit">${esc(d[1])}${d[2]?" · ["+esc(d[2])+"]":""}</div>
+     <div class="def"><div class="k">뜻 (Strong)</div>${linkify(esc(d[3]||"—"))}</div>
+     ${d[4]?`<div class="def"><div class="k">KJV 번역</div>${esc(d[4])}</div>`:""}
+     ${d[5]?`<div class="def"><div class="k">어원</div>${linkify(esc(d[5]))}</div>`:""}`:`<div class="muted">${LEX.H?"사전에 없는 번호입니다.":"사전을 불러오는 중…"}</div>`}
+     <div class="def"><div class="k">개역개정은 이렇게 옮겼습니다</div>${ko.length?`<div class="usage">${ko.map(([w,c])=>`<span>${esc(w)}<i>${c}</i></span>`).join("")}</div>`:(IDX.ready?"—":`<span class="spin"></span> 색인을 만드는 중…`)}</div>
+     <div class="links">${lnk.map(([t,u])=>`<a href="${u}" target="_blank" rel="noopener">${t} ↗</a>`).join("")}</div>
+     <div class="row" style="margin-top:6px"><button class="btn sm" id="wNote">연구 메모에 넣기</button><button class="btn sm" id="wOcc">관련 구절 보기 →</button></div>`;
+    B.querySelectorAll("[data-sn]").forEach(a=>a.onclick=()=>{ST.word=a.dataset.sn;renderStudy()});
+    const bn=$("#wNote");bn&&(bn.onclick=()=>{const t=d?`${s} ${d[0]} (${d[1]}) — ${d[3]}${ko.length?" / 개역개정: "+ko.slice(0,5).map(x=>x[0]).join(", "):""}`:s;appendNote(t)});
+    $("#wOcc").onclick=()=>{ST.tab="occ";renderStudyTabs();renderStudy()};
+  }else if(ST.tab==="occ"){
+    if(!IDX.ready){B.innerHTML=`<div class="empty"><span class="spin"></span> 용례 색인을 만드는 중입니다…</div>`;buildIndex().then(renderStudy);return}
+    const list=IDX.occ[s]||[];const it=LIB.find(x=>x.kind==="s");
+    const show=list.slice(0,120);
+    B.innerHTML=`<div class="small muted" style="margin-bottom:6px"><span class="sn">${s}</span>이 원어가 쓰인 구절 ${list.length}개${list.length>120?" (처음 120개)":""}</div>`+
+     show.map(k=>{const b=Math.floor(k/1e6),c=Math.floor(k/1e3)%1000,v=k%1000;const r=q(it,"select btext from Bible where book=? and chapter=? and verse=?",[b,c,v]);const t=r.length?r[0][0]:"";
+       const pl=plainLabel();const pr=pl?q(byLabel(pl),"select btext from Bible where book=? and chapter=? and verse=?",[b,c,v]):[];
+       const html=wordsHTML(t,pr.length?pr[0][0]:null).replace(/<span class="w[^"]*" data-s="([^"]+)">(.*?)<\/span>/g,(m,k,x)=>k===s?`<mark>${x}</mark>`:x);
+       return `<div class="occ" data-k="${k}"><b>${ref(b,c,v)}</b>${html}</div>`}).join("");
+    B.querySelectorAll(".occ").forEach(o=>o.onclick=()=>{const k=+o.dataset.k;ST.book=Math.floor(k/1e6);ST.ch=Math.floor(k/1e3)%1000;go(k%1000)});
+  }
+}
+function linkify(h){return h.replace(/\b([HG])(\d{1,5})\b/g,(m,a,b)=>`<a href="javascript:void 0" data-sn="${a}${+b}">${m}</a>`)}
+function sanitize(html){
+  const doc=new DOMParser().parseFromString("<div>"+html+"</div>","text/html");
+  const ok={B:"b",STRONG:"b",I:"i",EM:"i",U:"u",BR:"br",P:"p",SUP:"sup",SUB:"sub",UL:"ul",OL:"ol",LI:"li"};
+  function walk(n){let o="";for(const c of n.childNodes){if(c.nodeType===3)o+=esc(c.textContent);else if(c.nodeType===1){const tg=c.tagName;if(tg==="SCRIPT"||tg==="STYLE")continue;if(tg==="FONT"){o+=`<span class="hl">${walk(c)}</span>`;continue}const t=ok[tg];if(t==="br")o+="<br>";else if(t)o+=`<${t}>${walk(c)}</${t}>`;else o+=walk(c)}}return o}
+  return walk(doc.body.firstChild);
+}
+function renderCmt(B){
+  const cs=comms();
+  if(!cs.length){B.innerHTML=`<div class="empty">주석 파일(.cdb)을 불러오면 선택한 절의 주석이 여기에 나타납니다.<br><span class="small">예: 매튜헨리, 랑게렌스키, Ellicott, Pulpit_H</span></div>`;return}
+  if(!ST.cmt||!byLabel(ST.cmt))ST.cmt=(cs.find(x=>/매튜헨리|랑게/.test(x.label))||cs[0]).label;
+  const it=byLabel(ST.cmt);const v=ST.sel?Math.min(ST.sel.a,ST.sel.b):1;
+  if(!isOpen(it)){B.innerHTML=`<div class="empty"><span class="spin"></span> ${esc(ST.cmt)} 주석을 여는 중…</div>`;need([ST.cmt]).then(()=>{if(isOpen(byLabel(ST.cmt)))renderStudy()});return}
+  const rows=q(it,"select verse,btext from Bible where book=? and chapter=? order by verse",[ST.book,ST.ch]);
+  let idx=-1;rows.forEach((r,i)=>{if(r[0]<=v)idx=i});if(idx<0&&rows.length)idx=0;
+  if(ST._cmtNav!=null){idx=Math.max(0,Math.min(rows.length-1,ST._cmtNav));ST._cmtNav=null}
+  ST.cmtIdx=idx;
+  B.innerHTML=`<div class="row" style="margin-bottom:8px">
+     <select class="sel" id="cmtSel">${cs.map(x=>`<option ${x.label===ST.cmt?"selected":""}>${esc(x.label)}</option>`).join("")}</select>
+     <span style="flex:1"></span>
+     ${rows.length?`<button class="btn sm" id="cP">‹</button><span class="small muted">${ST.ch}:${rows[idx][0]}~ (${idx+1}/${rows.length})</span><button class="btn sm" id="cN">›</button>`:""}
+   </div>
+   ${rows.length?`<div class="cmt">${sanitize(rows[idx][1]||"")}</div><p class="small muted" style="margin-top:10px">글을 드래그해 고르면 바로 ‘연구 메모에 넣기 · 설교에 넣기’ 단추가 뜹니다. (오른쪽 클릭도 됩니다)</p>`:`<div class="empty">이 장에 대한 주석이 없습니다.</div>`}`;
+  $("#cmtSel").onchange=e=>{ST.cmt=e.target.value;saveView();renderStudy()};
+  if(rows.length){$("#cP").onclick=()=>{ST._cmtNav=idx-1;renderStudy()};$("#cN").onclick=()=>{ST._cmtNav=idx+1;renderStudy()};
+    ST.cmtRef=ref(ST.book,ST.ch,rows[idx][0])}
+}
+
+/* 환영 화면 */
+function welcomeHTML(){
+  return `<div class="welcome">
+   <h2>성경 자료를 넣어 주세요</h2>
+   <p class="muted">성경 파일(.bdb · .sdb · .cdb)을 이 기기에 한 번만 넣어 두면, 다음부터는 바로 열립니다. ${window.LX_HOST?"넣은 파일은 이 기기와 <b>내 구글 드라이브</b>에만 보관됩니다.":"파일은 <b>이 기기 밖으로 나가지 않습니다.</b>"}</p>
+   ${window.LX_welcomeHTML?window.LX_welcomeHTML():""}
+   <div class="row" style="gap:8px"><button class="btn primary" id="wPick">파일 고르기</button><a class="btn" href="${PACK_URL}" target="_blank" rel="noopener">공개 성경 묶음 받기 ↗</a></div>
+   <div class="rec"><b>처음이시라면</b><br>
+   ① 위의 <b>공개 성경 묶음</b>(무료)을 내려받아 압축을 풉니다 — 개역한글, KJV, ASV, YLT, Darby, BSB, 히브리어(WLC), 헬라어(TR)<br>
+   ② <b>파일 고르기</b>를 누르고 풀린 폴더의 파일을 모두 고릅니다</div>
+   <div class="rec"><b>가지고 계신 자료가 있다면</b><br>
+   · 베들레헴 형식(.bdb 성경 · .sdb 스트롱 코드 성경 · .cdb 주석)이면 그대로 넣을 수 있습니다<br>
+   · 스트롱 코드가 달린 성경(.sdb)을 넣으면 <b>단어를 눌러 원어</b>를 볼 수 있습니다<br>
+   · 저작권이 있는 자료는 정식으로 가지신 것만 개인 연구용으로 써 주세요</div>
+   <p class="small muted">아이패드에서는 ‘파일’ 앱에 저장한 파일을 고르시면 됩니다. 여러 개를 한 번에 고를 수 있습니다. · <a href="${SITE}guide.html" target="_blank" rel="noopener">사용 설명서</a></p>
+   ${SQL?"":`<p class="small" style="color:var(--bad)">성경 데이터 엔진을 불러오지 못했습니다. 새로고침해 보세요.</p>`}
+  </div>`;
+}
+/* 성경 단어 검색 */
+const FIND=Object.assign({q:"",scope:"all",label:null,res:null,busy:false},ls.get("sw.find",{}));FIND.res=null;
+function findLabelDefault(){const pl=plainLabel();const p=byLabel(ST.prim);return (p&&p.kind==="s"&&pl)?pl:ST.prim}
+function renderFind(B){
+  const bs=bibles().filter(x=>x.kind!=="s"||!plainLabel());
+  if(!FIND.label||!byLabel(FIND.label))FIND.label=findLabelDefault();
+  B.innerHTML=`<form id="fForm" class="row" style="gap:6px;margin-bottom:8px">
+     <input id="fq" value="${esc(FIND.q)}" placeholder="예: 염려 기도  (띄어 쓰면 모두 들어간 구절)" style="flex:1;min-width:150px;border:1px solid var(--line2);border-radius:8px;padding:7px 10px;background:var(--panel);font-size:14px">
+     <button class="btn sm primary" type="submit">찾기</button></form>
+   <div class="row" style="margin-bottom:8px">
+     <select class="sel" id="fLabel">${bs.map(x=>`<option ${x.label===FIND.label?"selected":""} value="${esc(x.label)}">${esc(x.label)}</option>`).join("")}</select>
+     <select class="sel" id="fScope">${[["all","성경 전체"],["ot","구약"],["nt","신약"],["book",BOOKS[ST.book-1][0]+"만"]].map(([v,t])=>`<option value="${v}" ${FIND.scope===v?"selected":""}>${t}</option>`).join("")}</select>
+   </div>
+   <div id="fRes">${FIND.busy?`<div class="empty"><span class="spin"></span> 찾는 중…</div>`:FIND.res?findResHTML():`<div class="empty small">단어나 구절 일부를 넣고 찾기를 누르세요. 결과를 누르면 그 본문으로 갑니다.</div>`}</div>`;
+  $("#fForm").onsubmit=e=>{e.preventDefault();FIND.q=$("#fq").value.trim();doFind()};
+  $("#fLabel").onchange=e=>{FIND.label=e.target.value;FIND.res=null;saveFind();if(FIND.q)doFind();else renderStudy()};
+  $("#fScope").onchange=e=>{FIND.scope=e.target.value;saveFind();if(FIND.q)doFind()};
+  bindFindRes();
+}
+const saveFind=()=>ls.set("sw.find",{q:FIND.q,scope:FIND.scope,label:FIND.label});
+async function doFind(){
+  saveFind();if(!FIND.q){FIND.res=null;return renderStudy()}
+  // 한글 단어를 영어·원어 성경에서 찾으면 결과가 없으므로 한글 성경으로 바꿔 찾습니다
+  FIND.note="";
+  if(/[가-힣]/.test(FIND.q)&&!/[가-힣]/.test(FIND.label)){const d=findLabelDefault();const alt=/[가-힣]/.test(d)?d:(bibles().find(x=>/[가-힣]/.test(x.label)&&x.kind!=="s")||{}).label;if(alt){FIND.note=`${FIND.label}에서는 한글 단어를 찾을 수 없어 ${alt}에서 찾았습니다.`;FIND.label=alt}}
+  FIND.busy=true;renderStudy();await need([FIND.label]);
+  const it=byLabel(FIND.label);const words=FIND.q.split(/\s+/).filter(Boolean).slice(0,5);
+  // 세례/침례, 洗禮/浸禮는 어느 쪽으로 적혀 있어도 함께 찾습니다
+  const ps=[];let where=words.map(w=>{const vs=variants(w);vs.forEach(v=>ps.push("%"+v+"%"));return "("+vs.map(()=>"btext like ?").join(" or ")+")"}).join(" and ");
+  if(FIND.scope==="ot")where+=" and book<=39";else if(FIND.scope==="nt")where+=" and book>=40";else if(FIND.scope==="book"){where+=" and book=?";ps.push(ST.book)}
+  let rows=[];try{rows=q(it,`select book,chapter,verse,btext from Bible where ${where} order by book,chapter,verse limit 2001`,ps)}catch(e){console.warn(e)}
+  FIND.res={words,rows,label:FIND.label};FIND.busy=false;if(ST.tab==="find")renderStudy();
+}
+const variants=w=>[...new Set([w,w.replace(/세례/g,"침례"),w.replace(/침례/g,"세례"),w.replace(/洗禮/g,"浸禮"),w.replace(/浸禮/g,"洗禮"),w.replace(/세례|침례/g,"洗禮"),w.replace(/세례|침례/g,"浸禮")])];
+function findResHTML(){
+  const {rows,words,label}=FIND.res;const isS=byLabel(label)&&byLabel(label).kind==="s";
+  const hl=[...new Set(words.flatMap(variants))];
+  const re=new RegExp("("+hl.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")","g");
+  const per={};rows.forEach(r=>{per[r[0]]=(per[r[0]]||0)+1});
+  const top=Object.entries(per).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const show=rows.slice(0,300);
+  return `${FIND.note?`<div class="small" style="margin-bottom:6px;color:var(--gold)">${esc(FIND.note)}</div>`:""}<div class="small muted" style="margin-bottom:6px"><b style="color:var(--ink)">${rows.length>2000?"2,000개 이상":rows.length.toLocaleString()+"개 구절"}</b>${rows.length>300?" · 처음 300개 표시":""}${top.length>1?` · 많이 나오는 책: ${top.map(([b,c])=>BOOKS[b-1][1]+" "+c).join(", ")}`:""}</div>
+   ${rows.length?`<div class="row" style="margin-bottom:6px"><button class="btn sm" id="fNote">결과 목록을 연구 메모에 넣기</button></div>`:""}
+   ${show.map(([b,c,v,t])=>`<div class="occ" data-k="${b*1e6+c*1e3+v}"><b>${ref(b,c,v)}</b>${esc(stripTags(isS?cleanTagged(t):t)).replace(re,"<mark>$1</mark>")}</div>`).join("")||`<div class="empty">‘${esc(FIND.q)}’이(가) <b>${esc(label)}</b> · ${({all:"성경 전체",ot:"구약",nt:"신약",book:BOOKS[ST.book-1][0]})[FIND.scope]}에 없습니다.${FIND.scope!=="all"?`<br><button class="btn sm" id="fAll" style="margin-top:8px">성경 전체에서 다시 찾기</button>`:""}</div>`}`;
+}
+function bindFindRes(){
+  document.querySelectorAll("#fRes .occ").forEach(o=>o.onclick=()=>{const k=+o.dataset.k;ST.book=Math.floor(k/1e6);ST.ch=Math.floor(k/1e3)%1000;go(k%1000)});
+  const fa=$("#fAll");fa&&(fa.onclick=()=>{FIND.scope="all";doFind()});
+  const n=$("#fNote");n&&(n.onclick=()=>{const r=FIND.res.rows.slice(0,40).map(([b,c,v])=>ref(b,c,v));appendNote(`[검색 "${FIND.q}" · ${FIND.res.label} · ${FIND.res.rows.length}구절] ${r.join(", ")}${FIND.res.rows.length>40?" …":""}`)});
+}
+
+function bindWelcome(){const b=$("#wPick");b&&(b.onclick=()=>$("#fileIn").click());window.LX_bindWelcome&&window.LX_bindWelcome()}
+
+async function addFiles(fl){
+  if(!SQL){await initSQL();if(!SQL)return toast("데이터 엔진을 불러오지 못했습니다")}
+  let n=0;
+  for(const f of fl){
+    if(!/\.(bdb|sdb|cdb)$/i.test(f.name))continue;
+    const bytes=await f.arrayBuffer();
+    const it={name:f.name,label:labelOf(f.name),kind:kindOf(f.name),size:f.size,bytes};
+    try{const d=new SQL.Database(new Uint8Array(bytes));d.exec("select count(*) from Bible");d.close()}catch(e){toast(labelOf(f.name)+": 읽을 수 없는 파일");continue}
+    it.bytes=null;
+    const ok=await IDB.put({name:it.name,label:it.label,kind:it.kind,size:it.size,bytes});
+    if(!ok){toast(it.label+": 저장 공간이 부족해 넣지 못했습니다",3500);continue}
+    const i=LIB.findIndex(x=>x.label===it.label);if(i>=0){const o=LIB[i];try{o.db&&o.db.close()}catch(e){}if(o.name!==it.name)await IDB.del(o.name);LIB.splice(i,1,it)}else LIB.push(it);
+    n++;if(fl.length>3)toast(`넣는 중… ${n}개`,900);
+  }
+  LIB.sort(sortLib);saveMeta();
+  if(n&&window.LX_onFilesAdded)window.LX_onFilesAdded(fl);
+  if(n){toast(n+"개 자료를 넣었습니다");if(LIB.some(x=>x.kind==="s"))buildIndex().then(()=>{if(ST.word)renderStudy()});renderLeft();if($("#setModal"))openSettings()}
+}
+function sortLib(a,b){const o=x=>x.kind==="s"?0:x.kind==="c"?3:isOrig(x)?2:/[가-힣]/.test(x.label)?1:1.5;return o(a)-o(b)||a.label.localeCompare(b.label,"ko")}
+
+/* ============ 설교 데이터 ============ */
+let SER=null,LIST=ls.get("sw.list",[]); // LIST: [{id,title,passage,date,place,updated}]
+function newSermon(){
+  return{id:uid(),title:"",passage:null,date:new Date().toISOString().slice(0,10),place:"",minutes:30,bigIdea:"",type:null,struct:null,stage:1,notes:"",blocks:[],created:Date.now(),updated:Date.now()};
+}
+function metaOf(s){return{id:s.id,title:s.title,passage:s.passage&&s.passage.label,date:s.date,place:s.place,type:s.type,updated:s.updated,chars:s.blocks.reduce((a,b)=>a+cnt(b.text),0)}}
+let saveT=null,dbT=null,dbBusy=false,dbPending=false;
+function setDocTitle(){try{document.title=(SER&&SER.title?SER.title+" · ":"")+"렉시오 · 설교 작업실"}catch(e){}}
+function touch(){SER.updated=Date.now();setDocTitle();clearTimeout(saveT);saveT=setTimeout(saveLocal,500);clearTimeout(dbT);dbT=setTimeout(saveRemote,1800);setStatus("saving");$("#topTitle").textContent=SER.title||"제목 없는 설교"}
+function saveLocal(){ls.set("sw.s."+SER.id,SER);const i=LIST.findIndex(x=>x.id===SER.id);const m=metaOf(SER);if(i>=0)LIST[i]=m;else LIST.unshift(m);ls.set("sw.list",LIST);ls.set("sw.cur",SER.id);if(!CAP.db)setStatus("local")}
+async function saveRemote(){
+  if(!CAP.db||!CAP.uid)return;
+  if(dbBusy){dbPending=true;return}
+  dbBusy=true;
+  try{await CAP.db.collection("data/users/"+CAP.uid).doc("s_"+SER.id).set(JSON.parse(JSON.stringify(SER)));setStatus("synced")}catch(e){console.warn(e);setStatus("local")}
+  dbBusy=false;if(dbPending){dbPending=false;saveRemote()}
+}
+function normDocs(res){if(!res)return[];const arr=Array.isArray(res)?res:(res.docs||res.items||res.rows||res.results||[]);return arr.map(d=>{const data=typeof d.data==="function"?d.data():(d.data!==undefined?d.data:(d.value!==undefined?d.value:d));return{id:d.id||d.key||(data&&data.id),data}})}
+function normDoc(v){if(!v)return null;if(typeof v.data==="function")return v.data();if(v.exists===false)return null;if(v.data!==undefined&&typeof v.data==="object")return v.data;return v}
+async function pullRemote(){
+  if(!CAP.db||!CAP.uid)return;
+  try{
+    const docs=normDocs(await CAP.db.collection("data/users/"+CAP.uid).get());
+    let changed=false;
+    for(const d of docs){const s=d.data;if(!s||!s.id||!Array.isArray(s.blocks))continue;const loc=ls.get("sw.s."+s.id,null);
+      if(!loc||(s.updated||0)>(loc.updated||0)){ls.set("sw.s."+s.id,s);const i=LIST.findIndex(x=>x.id===s.id);const m=metaOf(s);if(i>=0)LIST[i]=m;else LIST.push(m);changed=true;if(SER&&SER.id===s.id&&s.updated>SER.updated){SER=s;renderRight()}}
+      else if(loc&&(loc.updated||0)>(s.updated||0)){/* 이 기기가 최신 → 올리기 */try{await CAP.db.collection("data/users/"+CAP.uid).doc("s_"+loc.id).set(loc)}catch(e){}}
+    }
+    // 로컬에만 있는 설교 올리기
+    const remoteIds=new Set(docs.map(d=>d.data&&d.data.id));
+    for(const m of LIST){if(!remoteIds.has(m.id)){const loc=ls.get("sw.s."+m.id,null);if(loc)try{await CAP.db.collection("data/users/"+CAP.uid).doc("s_"+m.id).set(loc)}catch(e){}}}
+    if(changed){LIST.sort((a,b)=>(b.updated||0)-(a.updated||0));ls.set("sw.list",LIST)}
+    setStatus("synced");
+  }catch(e){console.warn("동기화 실패",e);setStatus("local")}
+}
+function setStatus(k){const el=$("#status");if(!el)return;el.classList.toggle("local",k!=="synced");el.innerHTML=`<span class="dot"></span>`+(k==="saving"?"저장 중…":k==="synced"?(window.LX_HOST?"저장됨 · 구글 드라이브":"저장됨 · 맥·아이패드 동기화"):IS_APP?"저장됨 · 이 맥":"저장됨 · 이 기기")}
+function loadSermon(id){const s=ls.get("sw.s."+id,null);if(s){SER=s;ls.set("sw.cur",id);renderRight();$("#topTitle").textContent=SER.title||"제목 없는 설교"}}
+function setPassage(r){
+  SER.passage={b:r.b,c:r.c,v1:r.v1,v2:r.v2,label:refLong(r.b,r.c,r.v1,r.v2)};touch();renderHead();toast("설교 본문: "+SER.passage.label);
+  if(innerWidth<=900)showRight(true);
+}
+
+/* ============ 오른쪽: 설교 작성 ============ */
+let lastTA=null,lastPos=null;
+function renderRight(){
+  const W=$("#rwrap");
+  W.innerHTML=`<div class="card head" id="head"></div>
+   <div class="steps" id="steps"></div>
+   <div id="stage"></div>`;
+  renderHead();renderSteps();renderStage();renderFooter();
+}
+function renderHead(){
+  const H=$("#head");const p=SER.passage;
+  H.innerHTML=`<input class="tinput" id="sTitle" placeholder="설교 제목" value="${esc(SER.title)}">
+   <div class="meta">
+     <span class="passage ${p?"":"none"}" id="sPass" title="${p?"누르면 왼쪽에 본문이 열립니다":"왼쪽에서 절을 고르고 ‘설교 본문으로’를 누르세요"}">📖 ${p?esc(p.label):"본문 미정"}</span>
+     <label>날짜 <input type="date" id="sDate" value="${esc(SER.date)}"></label>
+     <label>예배 <select id="sPlace"><option value="">선택</option>${PLACES.map(([n])=>`<option ${n===SER.place?"selected":""}>${n}</option>`).join("")}</select></label>
+     <label>목표 <input type="number" id="sMin" min="3" max="90" value="${SER.minutes}" style="width:62px">분</label>
+   </div>
+   <div class="bigidea"><div class="lab">중심 메시지 (한 문장)</div>
+   <textarea id="sBig" rows="1" placeholder="이 설교가 말하려는 단 하나의 진리를 한 문장으로 적어 보세요">${esc(SER.bigIdea)}</textarea></div>`;
+  $("#sTitle").oninput=e=>{SER.title=e.target.value;touch()};
+  $("#sDate").onchange=e=>{SER.date=e.target.value;touch()};
+  $("#sPlace").onchange=e=>{SER.place=e.target.value;const p=PLACES.find(x=>x[0]===SER.place);if(p){SER.minutes=p[1];$("#sMin").value=p[1]}touch();renderFooter()};
+  $("#sMin").oninput=e=>{SER.minutes=Math.max(1,+e.target.value||1);touch();renderFooter()};
+  const big=$("#sBig");autosize(big);big.oninput=()=>{SER.bigIdea=big.value;autosize(big);touch()};
+  $("#sPass").onclick=()=>{if(!p)return toast("왼쪽 성경에서 절 번호를 눌러 고른 뒤 ‘설교 본문으로’를 누르세요");ST.book=p.b;ST.ch=p.c;ST.sel={a:p.v1,b:p.v2};saveView();renderLeft();showRight(false);setTimeout(()=>{const el=document.querySelector(`[data-v="${p.v1}"]`);el&&el.scrollIntoView({block:"center"})},40)};
+}
+function renderSteps(){
+  const names=["설교 종류","설교 구조","순서 정하기","작성하기"];
+  $("#steps").innerHTML=names.map((n,i)=>{const k=i+1;const can=k===1||(k===2&&SER.type)||(k>=3&&SER.struct);return `${i?'<span class="stepArrow">›</span>':""}<button class="step ${SER.stage===k?"on":""} ${SER.stage>k||(k<4&&can&&SER.stage===4)?"done":""}" data-k="${k}" ${can?"":"disabled"}><span class="n">${SER.stage>k?"✓":k}</span>${n}</button>`}).join("");
+  document.querySelectorAll(".step").forEach(b=>b.onclick=()=>{if(b.disabled)return;SER.stage=+b.dataset.k;touch();renderSteps();renderStage()});
+}
+function typeName(){const t=TYPES.find(x=>x.id===SER.type);return t?t.nm:""}
+function structName(){const t=STRUCTS.find(x=>x.id===SER.struct);return t?t.nm:""}
+function renderStage(){
+  const G=$("#stage");
+  if(SER.stage===1){
+    G.innerHTML=`<div class="card pane"><h3>어떤 설교인가요?</h3><div class="sub">종류를 고르면 어울리는 예배 자리·시간·구조가 미리 채워집니다. 나중에 얼마든지 바꿀 수 있습니다.</div>
+     <div class="grid">${TYPES.map(t=>`<button class="opt ${SER.type===t.id?"on":""}" data-id="${t.id}"><span class="nm">${t.nm}</span><span class="ds">${t.ds}</span></button>`).join("")}</div></div>`;
+    G.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const t=TYPES.find(x=>x.id===b.dataset.id);SER.type=t.id;if(!SER.place||SER._autoPlace){SER.place=t.place;SER.minutes=(PLACES.find(p=>p[0]===t.place)||[0,30])[1];SER._autoPlace=true}if(!SER.blocks.some(x=>x.text))SER.struct=t.st;SER.stage=2;touch();renderHead();renderSteps();renderStage();renderFooter()});
+  }else if(SER.stage===2){
+    G.innerHTML=`<div class="summary"><b>${typeName()}</b> · ${esc(SER.place||"")} ${SER.minutes}분</div>
+    <div class="card pane"><h3>설교의 뼈대를 고르세요</h3><div class="sub">구조마다 블록(서론·대지·적용 등)이 자동으로 만들어집니다. 추천 구조에는 ★ 표시가 있습니다.</div>
+     <div class="grid wide">${STRUCTS.map(s=>{const rec=(TYPES.find(t=>t.id===SER.type)||{}).st===s.id;return `<button class="opt ${SER.struct===s.id?"on":""}" data-id="${s.id}"><span class="nm">${rec?"★ ":""}${s.nm}</span><span class="ds">${s.ds}</span><span class="skel">${s.blocks.map(b=>b[0]).join(" → ")}</span></button>`}).join("")}</div>
+     <div class="paneFoot"><button class="btn" data-back>‹ 종류</button><span class="small muted">이미 쓴 내용이 있으면 구조를 바꿔도 지워지지 않습니다</span></div></div>`;
+    G.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{applyStruct(b.dataset.id);SER.stage=3;touch();renderSteps();renderStage()});
+    G.querySelector("[data-back]").onclick=()=>{SER.stage=1;touch();renderSteps();renderStage()};
+  }else if(SER.stage===3){
+    G.innerHTML=`<div class="summary"><b>${typeName()}</b> · <b>${structName()}</b></div>
+    <div class="card pane"><h3>순서를 정하세요</h3><div class="sub">끌어서 옮기거나 ▲▼로 순서를 바꾸고, 이름을 바로 고칠 수 있습니다. 필요 없는 블록은 ✕로 뺍니다.</div>
+     <div class="olist" id="olist"></div>
+     <div class="addbar"><span class="small muted" style="align-self:center">블록 더하기</span>${BLOCK_LIB.map(n=>`<button class="chip" data-add="${n}">+ ${n}</button>`).join("")}</div>
+     <div class="paneFoot"><button class="btn" data-back>‹ 구조</button><button class="btn primary" data-next>이 순서로 작성하기 ›</button></div></div>`;
+    renderOrder();
+    G.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{let n=b.dataset.add;if(n==="대지"){const k=SER.blocks.filter(x=>/대지/.test(x.title)).length+1;n=k+"대지"}SER.blocks.push({id:uid(),title:n,hint:"",text:""});touch();renderOrder()});
+    G.querySelector("[data-back]").onclick=()=>{SER.stage=2;touch();renderSteps();renderStage()};
+    G.querySelector("[data-next]").onclick=()=>{SER.stage=4;touch();renderSteps();renderStage()};
+  }else{
+    G.innerHTML=`<div class="summary"><b>${typeName()||"설교"}</b> · <b>${structName()||"자유 구조"}</b> · ${SER.blocks.length}개 블록 <button class="btn sm ghost" id="toOrder">순서 바꾸기</button> <button class="btn sm ghost" id="aiAll" style="display:none">✦ 전체 개요 제안</button></div>
+     <div class="blocks" id="blocks"></div>
+     <div class="addbar" style="margin-top:14px">${BLOCK_LIB.slice(0,8).map(n=>`<button class="chip" data-add="${n}">+ ${n}</button>`).join("")}</div>`;
+    $("#toOrder").onclick=()=>{SER.stage=3;touch();renderSteps();renderStage()};
+    G.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{SER.blocks.push({id:uid(),title:b.dataset.add,hint:"",text:""});touch();renderBlocks()});
+    if(CAP.ai){const a=$("#aiAll");a.style.display="";a.onclick=()=>aiRun("outline",null)}
+    renderBlocks();
+  }
+}
+function applyStruct(id){
+  const st=STRUCTS.find(s=>s.id===id);SER.struct=id;
+  const old=SER.blocks.filter(b=>cnt(b.text));
+  const fresh=st.blocks.map(([t,h])=>({id:uid(),title:t,hint:h,text:""}));
+  // 같은 이름의 블록에 이미 쓴 글을 옮기고, 나머지는 끝에 보존
+  for(const o of old){const f=fresh.find(x=>x.title===o.title&&!x.text);if(f)f.text=o.text;else fresh.push(o)}
+  SER.blocks=fresh;
+}
+function renderOrder(){
+  const O=$("#olist");
+  O.innerHTML=SER.blocks.map((b,i)=>`<div class="oitem" draggable="true" data-i="${i}"><span class="handle">⠿</span><span class="no">${i+1}</span><input value="${esc(b.title)}" data-i="${i}">${cnt(b.text)?`<span class="small muted">${cnt(b.text)}자</span>`:""}<button class="iconbtn" data-up="${i}">▲</button><button class="iconbtn" data-dn="${i}">▼</button><button class="iconbtn" data-rm="${i}">✕</button></div>`).join("");
+  O.querySelectorAll("input").forEach(inp=>inp.oninput=()=>{SER.blocks[+inp.dataset.i].title=inp.value;touch()});
+  const mv=(i,j)=>{if(j<0||j>=SER.blocks.length)return;const [x]=SER.blocks.splice(i,1);SER.blocks.splice(j,0,x);touch();renderOrder()};
+  O.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>mv(+b.dataset.up,+b.dataset.up-1));
+  O.querySelectorAll("[data-dn]").forEach(b=>b.onclick=()=>mv(+b.dataset.dn,+b.dataset.dn+1));
+  O.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{const i=+b.dataset.rm;const bl=SER.blocks[i];if(cnt(bl.text)&&!b.dataset.sure){b.dataset.sure=1;b.textContent="삭제?";b.style.width="auto";b.style.color="var(--bad)";setTimeout(()=>{if(b.isConnected){delete b.dataset.sure;b.textContent="✕";b.style.color=""}},2500);return}SER.blocks.splice(i,1);touch();renderOrder()});
+  let from=null;
+  O.querySelectorAll(".oitem").forEach(el=>{
+    el.ondragstart=e=>{from=+el.dataset.i;el.classList.add("drag");e.dataTransfer.effectAllowed="move"};
+    el.ondragend=()=>{el.classList.remove("drag");O.querySelectorAll(".over").forEach(x=>x.classList.remove("over"))};
+    el.ondragover=e=>{e.preventDefault();el.classList.add("over")};
+    el.ondragleave=()=>el.classList.remove("over");
+    el.ondrop=e=>{e.preventDefault();const to=+el.dataset.i;if(from!=null&&from!==to)mv(from,to);from=null};
+  });
+}
+function autosize(t){t.style.height="auto";t.style.height=(t.scrollHeight+2)+"px"}
+function renderBlocks(){
+  const B=$("#blocks");
+  B.innerHTML=`<div class="block notes" data-notes>
+     <div class="bhead"><span class="bno">메모</span><span class="btitle" style="font-weight:700">연구 메모 <span class="small muted" style="font-weight:400">— 원어·주석·관찰을 모으는 곳 (원고 분량에 포함되지 않음)</span></span><button class="iconbtn" id="nTog">${SER._nMin?"▸":"▾"}</button></div>
+     <textarea id="notesTA" class="${SER._nMin?"hidden":""}" placeholder="왼쪽에서 원어·주석의 ‘연구 메모에 넣기’를 누르면 여기에 쌓입니다. 본문 관찰도 자유롭게 적어 두세요.">${esc(SER.notes)}</textarea>
+   </div>`+SER.blocks.map((b,i)=>`<div class="block" data-id="${b.id}">
+     <div class="bhead"><span class="bno">${i+1}</span><input class="btitle" value="${esc(b.title)}"><span class="bcount">${cnt(b.text)}자</span>${CAP.ai?`<button class="btn sm gold" data-ai="${b.id}">✦ 도움</button>`:""}</div>
+     ${b.hint?`<div class="bhint">${esc(b.hint)}</div>`:""}
+     <textarea placeholder="${esc(b.title)} 내용을 적어 주세요">${esc(b.text)}</textarea>
+     <div class="aiSlot"></div>
+   </div>`).join("");
+  const nt=$("#notesTA");autosize(nt);nt.oninput=()=>{SER.notes=nt.value;autosize(nt);touch()};
+  nt.onfocus=()=>{lastTA=nt};nt.onblur=()=>{lastPos=nt.selectionStart};
+  $("#nTog").onclick=()=>{SER._nMin=!SER._nMin;touch();renderBlocks()};
+  B.querySelectorAll(".block[data-id]").forEach(el=>{
+    const b=SER.blocks.find(x=>x.id===el.dataset.id);const ta=el.querySelector("textarea");const ti=el.querySelector(".btitle");
+    autosize(ta);
+    ta.oninput=()=>{b.text=ta.value;autosize(ta);el.querySelector(".bcount").textContent=cnt(b.text)+"자";touch();renderFooter()};
+    ta.onfocus=()=>{lastTA=ta;el.classList.add("focus")};ta.onblur=()=>{lastPos=ta.selectionStart;el.classList.remove("focus")};
+    ti.oninput=()=>{b.title=ti.value;touch()};
+    const ab=el.querySelector("[data-ai]");ab&&(ab.onclick=e=>aiMenu(e.currentTarget,b));
+  });
+  requestAnimationFrame(()=>B.querySelectorAll("textarea").forEach(autosize));
+}
+function insertText(txt){
+  if(!SER)return;
+  if(SER.stage!==4){SER.stage=4;renderSteps();renderStage()}
+  let ta=lastTA&&lastTA.isConnected?lastTA:null;
+  if(!ta){const all=[...document.querySelectorAll(".block textarea")];ta=all.find(x=>!x.value.trim())||all[all.length-1]||null;if(ta){lastTA=ta;lastPos=ta.value.length}}
+  if(!ta){appendNote(txt);return}
+  const pos=document.activeElement===ta?ta.selectionStart:(lastPos??ta.value.length);
+  const before=ta.value.slice(0,pos),after=ta.value.slice(pos);
+  const sep=before&&!/\s$/.test(before)?" ":"";
+  ta.value=before+sep+txt+after;ta.dispatchEvent(new Event("input"));
+  lastPos=pos+sep.length+txt.length;
+  const blk=ta.closest(".block");blk&&blk.scrollIntoView({block:"nearest",behavior:"smooth"});
+  toast("설교에 넣었습니다");if(innerWidth<=900)showRight(true);
+}
+function appendNote(t){SER.notes=(SER.notes?SER.notes.replace(/\s*$/,"")+"\n":"")+"• "+t;touch();if(SER.stage===4&&$("#notesTA")){$("#notesTA").value=SER.notes;autosize($("#notesTA"))}toast("연구 메모에 넣었습니다")}
+function renderFooter(){
+  const F=$("#footer");if(!SER)return;
+  const chars=SER.blocks.reduce((a,b)=>a+cnt(b.text),0);const min=chars/S.cpm;const goal=SER.minutes||30;const pct=Math.min(100,min/goal*100);
+  const cls=min>goal*1.15?"bad":min>goal*1.02?"warn":"";
+  F.innerHTML=`<div class="fbar"><div class="meter"><div class="bar"><i class="${cls}" style="width:${pct}%"></i></div>
+   <div class="lbl">원고 <b>${chars.toLocaleString()}자</b> · 약 <b>${min.toFixed(1)}분</b> / 목표 ${goal}분 <span class="muted">(분당 ${S.cpm}자 기준)</span>${min>goal*1.02?` · <span style="color:var(--warn)">${Math.round((min-goal)*S.cpm).toLocaleString()}자 넘침</span>`:min<goal*.8&&chars?` · <span class="muted">${Math.round((goal-min)*S.cpm).toLocaleString()}자 더 쓸 수 있음</span>`:""}</div></div>
+   <button class="btn" id="fNew">+ 새 설교</button></div>
+   <div class="credit"><a href="${SITE}" target="_blank" rel="noopener">렉시오</a> · 만든 사람 이세진 목사 · 의견과 고칠 점은 <a href="mailto:bear4jesus@gmail.com?subject=%EB%A0%89%EC%8B%9C%EC%98%A4%20%ED%94%BC%EB%93%9C%EB%B0%B1">bear4jesus@gmail.com</a> <button class="linkbtn" id="cpMail">주소 복사</button></div>`;
+  $("#cpMail").onclick=()=>copyText("bear4jesus@gmail.com","이메일 주소를 복사했습니다");
+  $("#fNew").onclick=()=>{SER=newSermon();saveLocal();renderRight();$("#topTitle").textContent="새 설교";toast("새 설교를 시작합니다")};
+}
+
+/* ============ AI 도우미 ============ */
+const SYS_DEFAULT=`당신은 개혁주의·복음주의 전통에 선 한국 목회자의 설교 준비를 돕는 연구 조교입니다.
+원칙: 성경 본문의 문맥과 저자 의도를 먼저 존중하고(문법적·역사적 해석), 그리스도 중심으로 해석하며, 웨스트민스터 신앙고백과 요리문답에 어긋나지 않게 씁니다.
+성경 인용은 개역개정 표현을 따르고, 원어를 말할 때는 주어진 원어 자료 범위 안에서만 말하며 확실하지 않으면 그렇다고 밝힙니다. 지어낸 예화를 실화처럼 쓰지 말고, 예화는 '예화 아이디어'로 표시합니다.
+한국 교회 강단의 경어체(~합니다, ~입니다)로, 쉽고 따뜻하며 선명하게 씁니다. 답은 바로 본문만 내고 머리말이나 덧붙이는 설명은 쓰지 않습니다.`;
+const sysText=()=>(S.aiGuide&&S.aiGuide.trim())||SYS_DEFAULT;
+function ctxText(){
+  const p=SER.passage;let t=`[설교 정보]\n제목: ${SER.title||"(미정)"}\n종류: ${typeName()||"-"} / 구조: ${structName()||"-"} / 예배: ${SER.place||"-"} / 목표 ${SER.minutes}분 (약 ${(SER.minutes*S.cpm).toLocaleString()}자)\n중심 메시지: ${SER.bigIdea||"(미정)"}\n`;
+  if(p&&LIB.length){t+=`\n[설교 본문: ${p.label} (개역개정)]\n`;const label=(LIB.find(x=>/개역개정/.test(x.label)&&x.kind!=="c")||{}).label||ST.prim;for(let v=p.v1;v<=p.v2;v++){const s=verseText(label,p.b,p.c,v);if(s)t+=`${v} ${s}\n`}}
+  else if(p)t+=`\n[설교 본문] ${p.label}\n`;
+  if(SER.notes)t+=`\n[목사님의 연구 메모]\n${SER.notes.slice(0,4000)}\n`;
+  t+=`\n[설교 순서와 현재 원고]\n`+SER.blocks.map((b,i)=>`${i+1}. ${b.title}${b.text?`\n${b.text.slice(0,1500)}`:" (아직 비어 있음)"}`).join("\n\n");
+  return t;
+}
+const AI_TASKS={
+  draft:["초안 제안","이 블록의 초안을 써 주세요. 분량은 전체 목표 분량에서 이 블록이 차지할 만큼으로 맞추세요."],
+  polish:["문장 다듬기","이 블록의 현재 원고를 설교자의 뜻과 내용은 그대로 두고, 말로 전하기 좋게 문장만 다듬어 주세요."],
+  shorten:["분량 줄이기","이 블록의 현재 원고를 핵심은 살리고 약 70% 분량으로 줄여 주세요."],
+  illus:["예화 아이디어","이 블록에 어울리는 예화 아이디어 3가지를 짧게 제안해 주세요. 실화가 아니면 실화처럼 쓰지 마세요."],
+  apply:["적용 질문","이 블록 내용을 청중의 삶에 연결하는 구체적인 적용 3가지와 나눔 질문 2가지를 주세요."],
+  observe:["본문 관찰 질문","설교 본문을 깊이 관찰하도록 돕는 질문 8가지(반복어, 접속사, 대조, 문맥, 원어상 중요한 단어 등)를 주세요."]
+};
+function aiMenu(btn,b){
+  document.querySelectorAll(".menu").forEach(m=>m.remove());
+  const m=document.createElement("div");m.className="menu";
+  m.innerHTML=Object.entries(AI_TASKS).map(([k,v])=>`<button data-k="${k}">${v[0]}</button>`).join("");
+  document.body.appendChild(m);const r=btn.getBoundingClientRect();m.style.top=(r.bottom+4+scrollY)+"px";m.style.left=Math.min(r.left,innerWidth-210)+"px";
+  m.onclick=e=>{const k=e.target.dataset.k;if(k){m.remove();aiRun(k,b)}};
+  setTimeout(()=>document.addEventListener("click",function f(e){if(!m.contains(e.target)){m.remove();document.removeEventListener("click",f)}}),0);
+}
+let aiCtl=null;
+async function aiRun(kind,b){
+  if(!CAP.ai)return;
+  const slot=b?document.querySelector(`.block[data-id="${b.id}"] .aiSlot`):null;
+  let host=slot;if(!host){host=document.createElement("div");$("#blocks").before(host)}
+  host.innerHTML=`<div class="aibox"><div class="small" style="font-weight:700;color:var(--accent);margin-bottom:4px">✦ ${kind==="outline"?"전체 개요 제안":AI_TASKS[kind][0]}${b?" · "+esc(b.title):""}${CAP.aiName?` <span class="muted" style="font-weight:400">· ${esc(CAP.aiName)}</span>`:""}</div><div class="txt"><span class="spin"></span> 생각하는 중…</div><div class="act"></div></div>`;
+  const txt=host.querySelector(".txt"),act=host.querySelector(".act");
+  const task=kind==="outline"?`설교 순서의 각 블록에 들어갈 핵심 내용을 블록 제목별로 2~4줄씩 개요로 제안해 주세요. 중심 메시지가 비어 있으면 맨 앞에 '중심 메시지 제안: ...'을 한 줄로 먼저 쓰세요.`:`[지금 작업할 블록] ${b.title}\n${b.hint?"(블록 안내: "+b.hint+")\n":""}${b.text?"[이 블록의 현재 원고]\n"+b.text+"\n":""}\n[요청] ${AI_TASKS[kind][1]}`;
+  try{aiCtl&&aiCtl.abort()}catch(e){}
+  aiCtl=new AbortController();
+  try{
+    const res=await CAP.ai(`${sysText()}\n\n${ctxText()}\n\n${task}`,{signal:aiCtl.signal,onText:({text})=>{txt.textContent=text},modelTier:"default",cache:false});
+    txt.textContent=res.text;
+    const btns=[];
+    if(b){btns.push(`<button class="btn sm primary" data-a="ins">커서 위치에 넣기</button>`);if(b.text&&(kind==="polish"||kind==="shorten"))btns.push(`<button class="btn sm" data-a="rep">원고를 이것으로 바꾸기</button>`);else if(!b.text&&kind==="draft")btns.push(`<button class="btn sm" data-a="rep">이 블록에 채우기</button>`)}
+    btns.push(`<button class="btn sm" data-a="note">연구 메모로</button>`,`<button class="btn sm ghost" data-a="x">닫기</button>`);
+    act.innerHTML=btns.join("");
+    act.onclick=e=>{const a=e.target.dataset.a;if(!a)return;const t=res.text.trim();
+      if(a==="ins"){const ta=document.querySelector(`.block[data-id="${b.id}"] textarea`);lastTA=ta;if(lastPos==null||lastTA!==ta)lastPos=ta.value.length;insertText(t)}
+      else if(a==="rep"){const old=b.text;b.text=t;touch();renderBlocks();renderFooter();toast("바꿨습니다");b._undo=old}
+      else if(a==="note"){appendNote(t)}
+      host.innerHTML="";if(!slot)host.remove()};
+  }catch(e){
+    const c=e&&e.code;txt.textContent=c==="not_granted"?"AI 사용이 허락되지 않았습니다.":c==="rate_limited"?"요청이 많아 잠시 쉬어야 합니다. 조금 뒤에 다시 눌러 주세요.":c==="aborted"||e.name==="AbortError"?"멈췄습니다.":"답을 받지 못했습니다: "+(e&&e.message||e);
+    act.innerHTML=`<button class="btn sm ghost" data-a="x">닫기</button>`;act.onclick=()=>{host.innerHTML="";if(!slot)host.remove()};
+  }
+}
+
+/* ============ 맥 앱: 내 AI 키로 연결 ============ */
+let APPAI=null;
+// 웹 버전(홈페이지)에서는 브라우저가 직접 AI 회사에 요청합니다. 키는 이 브라우저에만 저장됩니다.
+const WEBAI={
+  NAMES:{gemini:"Gemini",claude:"Claude API",openai:"ChatGPT API"},DEF:{gemini:"gemini-flash-latest",claude:"claude-sonnet-5-5",openai:"gpt-5-mini"},
+  c(){return Object.assign({provider:"",models:{},keys:{}},ls.get("sw.ai",{}))},
+  pub(){const c=this.c();const has={};for(const k in this.NAMES)has[k]=!!c.keys[k];return{provider:c.provider,models:Object.assign({},this.DEF,c.models),hasKey:has,names:this.NAMES}},
+  async get(){return this.pub()},
+  async set(o){const c=this.c();if("provider" in o)c.provider=o.provider;if(o.p&&o.model!==undefined)c.models[o.p]=o.model;if(o.p&&o.key!==undefined){if(o.key)c.keys[o.p]=o.key.trim();else delete c.keys[o.p]}ls.set("sw.ai",c);return this.pub()},
+  async call(url,opt){const r=await fetch(url,opt);const t=await r.text();let j=null;try{j=JSON.parse(t)}catch(e){}if(!r.ok){const m=(j&&(j.error&&(j.error.message||j.error.type)||j.message))||t.slice(0,200);throw new Error((r.status===401||r.status===403?"키가 맞지 않거나 권한이 없습니다. ":r.status===429?"사용 한도에 걸렸습니다. 잠시 뒤 다시 해 보세요. ":r.status===404?"모델 이름을 확인해 주세요. ":"")+"("+r.status+") "+m)}return j},
+  async ask(prompt){try{const c=this.c(),p=c.provider,key=c.keys[p],model=(c.models[p]||this.DEF[p]);if(!p||!key)throw new Error("AI가 연결되어 있지 않습니다.");
+    if(p==="gemini"){const j=await this.call(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(key)}`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompt}]}],generationConfig:{maxOutputTokens:8192}})});const t=((((j.candidates||[])[0]||{}).content||{}).parts||[]).map(x=>x.text||"").join("");if(!t)throw new Error("답이 비어 있습니다");return{text:t}}
+    if(p==="claude"){const j=await this.call("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model,max_tokens:8000,messages:[{role:"user",content:prompt}]})});return{text:(j.content||[]).filter(x=>x.type==="text").map(x=>x.text).join("")}}
+    if(p==="openai"){const j=await this.call("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{"content-type":"application/json",authorization:"Bearer "+key},body:JSON.stringify({model,messages:[{role:"user",content:prompt}]})});return{text:((((j.choices||[])[0]||{}).message)||{}).content||""}}
+    throw new Error("알 수 없는 AI입니다.")}catch(e){return{error:String(e.message||e)}}},
+  async models(p){try{const key=this.c().keys[p];if(!key)throw new Error("먼저 키를 저장해 주세요.");
+    if(p==="gemini"){const j=await this.call(`https://generativelanguage.googleapis.com/v1beta/models?pageSize=200&key=${encodeURIComponent(key)}`);return{list:(j.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes("generateContent")).map(m=>m.name.replace(/^models\//,"")).filter(n=>/gemini/.test(n))}}
+    if(p==="claude"){const j=await this.call("https://api.anthropic.com/v1/models?limit=100",{headers:{"x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"}});return{list:(j.data||[]).map(m=>m.id)}}
+    if(p==="openai"){const j=await this.call("https://api.openai.com/v1/models",{headers:{authorization:"Bearer "+key}});return{list:(j.data||[]).map(m=>m.id).filter(id=>/^(gpt|o\d|chatgpt)/.test(id)&&!/audio|realtime|tts|transcribe|image|search/.test(id)).sort()}}
+    return{list:[]}}catch(e){return{error:String(e.message||e)}}}
+};
+const keyAI=()=>IS_APP&&window.lexioApp&&window.lexioApp.ai?window.lexioApp.ai:(!(window.claude&&window.claude.use)?WEBAI:null);
+async function initAppAI(){
+  const A=keyAI();if(!A)return;
+  try{APPAI=await A.get()}catch(e){APPAI=null}
+  const p=APPAI&&APPAI.provider;
+  if(p&&APPAI.hasKey[p]){CAP.aiName=APPAI.names[p];CAP.ai=async(prompt,opts)=>{const r=await A.ask(prompt);if(opts&&opts.signal&&opts.signal.aborted)throw{name:"AbortError"};if(r.error)throw{message:r.error};opts&&opts.onText&&opts.onText({text:r.text});return{text:r.text}}}
+  else{CAP.ai=null;CAP.aiName=""}
+  if(SER&&SER.stage===4)renderStage();
+}
+function appAIHTML(){
+  if(!APPAI||!keyAI())return"";
+  const p=APPAI.provider;const opt=[["","사용 안 함"],["gemini","Gemini (구글 · 무료 키 가능)"],["claude","Claude API (앤트로픽 · 유료)"],["openai","ChatGPT API (오픈AI · 유료)"]];
+  const help={gemini:`<a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a>에서 구글 계정으로 무료 키를 받습니다. 무료 사용분은 보낸 내용이 구글 제품 개선에 쓰일 수 있으니, 성도 개인 사정은 넣지 마세요.`,claude:`<a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>에서 키를 만듭니다. 쓴 만큼 요금이 나옵니다(선불 충전).`,openai:`<a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>에서 키를 만듭니다. 쓴 만큼 요금이 나옵니다.`};
+  return `<h3 style="margin:22px 0 4px;font-size:15px">AI 연결 (내 키로 쓰기)</h3>
+   <div class="setrow"><span class="l">쓸 AI<small>${IS_APP?"키는 이 맥의 키체인으로 암호화해 저장되고, 고른 AI 회사에만 보내집니다":"키는 이 브라우저에만 저장되고, 고른 AI 회사에만 보내집니다. 함께 쓰는 컴퓨터에서는 쓰지 마세요"}</small></span><select class="sel" id="aiP">${opt.map(([v,t])=>`<option value="${v}" ${p===v?"selected":""}>${t}</option>`).join("")}</select></div>
+   ${p?`<div class="small muted" style="padding:6px 0">${help[p]}</div>
+   <div class="setrow"><span class="l">API 키 ${APPAI.hasKey[p]?`<span class="kind s">저장됨</span>`:""}</span><span class="row"><input type="password" id="aiK" placeholder="${APPAI.hasKey[p]?"바꿀 때만 새 키를 넣으세요":"키를 붙여 넣으세요"}" style="width:230px;border:1px solid var(--line2);border-radius:8px;padding:6px 9px;background:var(--panel)"><button class="btn sm primary" id="aiKS">저장</button>${APPAI.hasKey[p]?`<button class="btn sm ghost" id="aiKD">지우기</button>`:""}</span></div>
+   <div class="setrow"><span class="l">모델</span><span class="row"><input id="aiM" list="aiML" value="${esc(APPAI.models[p]||"")}" style="width:230px;border:1px solid var(--line2);border-radius:8px;padding:6px 9px;background:var(--panel)"><datalist id="aiML"></datalist><button class="btn sm" id="aiMS">저장</button><button class="btn sm" id="aiML2">목록 불러오기</button></span></div>
+   <div class="setrow" style="border:none"><span class="l">연결 시험</span><span class="row"><button class="btn sm gold" id="aiT">시험해 보기</button><span class="small muted" id="aiTR"></span></span></div>`:""}`;
+}
+function bindAppAI(){
+  if(!APPAI||!keyAI())return;const A=keyAI();
+  const P=()=>APPAI.provider;const re=async c=>{APPAI=c;await initAppAI();openSettings();setTimeout(()=>{const el=$("#aiP");el&&el.scrollIntoView({block:"center"})},30)};
+  $("#aiP").onchange=async e=>re(await A.set({provider:e.target.value}));
+  const ks=$("#aiKS");ks&&(ks.onclick=async()=>{const k=$("#aiK").value.trim();if(!k)return toast("키를 넣어 주세요");await re(await A.set({p:P(),key:k}));toast("키를 저장했습니다")});
+  const kd=$("#aiKD");kd&&(kd.onclick=async()=>{await re(await A.set({p:P(),key:""}));toast("키를 지웠습니다")});
+  const ms=$("#aiMS");ms&&(ms.onclick=async()=>{await re(await A.set({p:P(),model:$("#aiM").value.trim()}));toast("모델을 저장했습니다")});
+  const ml=$("#aiML2");ml&&(ml.onclick=async()=>{ml.disabled=true;const r=await A.models(P());ml.disabled=false;if(r.error)return toast(r.error,4000);$("#aiML").innerHTML=r.list.map(m=>`<option value="${esc(m)}">`).join("");toast(`모델 ${r.list.length}개를 불러왔습니다 — 모델 칸을 눌러 고르세요`,3000)});
+  const t=$("#aiT");t&&(t.onclick=async()=>{const o=$("#aiTR");o.innerHTML=`<span class="spin"></span>`;const r=await A.ask("‘연결되었습니다’라고 한 문장으로만 답하세요.");o.textContent=r.error?("실패: "+r.error):("성공: "+r.text.trim().slice(0,60))});
+}
+
+/* ============ 내보내기 ============ */
+function plainText(){
+  const p=SER.passage;let t=`${SER.title||"제목 없는 설교"}\n${p?"본문: "+p.label+"\n":""}${SER.date?SER.date:""}${SER.place?" · "+SER.place:""}\n`;
+  if(p&&LIB.length){const label=(LIB.find(x=>/개역개정/.test(x.label)&&x.kind!=="c")||{}).label||ST.prim;const ts=[];for(let v=p.v1;v<=p.v2;v++){const s=verseText(label,p.b,p.c,v);if(s)ts.push(v+" "+s)}if(ts.length)t+="\n"+ts.join("\n")+"\n"}
+  if(SER.bigIdea)t+=`\n중심 메시지: ${SER.bigIdea}\n`;
+  t+=SER.blocks.map(b=>`\n■ ${b.title}\n${b.text}`).join("\n");return t;
+}
+function docHTML(){
+  const p=SER.passage;
+  return `<html><head><meta charset="utf-8"><style>body{font-family:'바탕',Batang,serif;font-size:13pt;line-height:1.9}h1{font-size:18pt;margin:0}.m{color:#666;font-size:10.5pt}h3{font-size:12pt;color:#1f4e5f;margin:18pt 0 4pt}p{margin:0 0 8pt;white-space:pre-wrap}</style></head><body>
+  <h1>${esc(SER.title||"제목 없는 설교")}</h1><div class="m">${p?esc(p.label)+" · ":""}${esc(SER.date||"")} ${esc(SER.place||"")}</div>
+  ${SER.bigIdea?`<p><b>중심 메시지:</b> ${esc(SER.bigIdea)}</p>`:""}
+  ${SER.blocks.map(b=>`<h3>${esc(b.title)}</h3>${(b.text||"").split(/\n{2,}/).map(x=>`<p>${esc(x)}</p>`).join("")}`).join("")}</body></html>`;
+}
+function claudePrompt(){return `${sysText()}\n\n${ctxText()}\n\n[요청] 위 설교의 비어 있는 블록을 채우고, 이미 쓴 부분은 문장을 다듬어 전체 설교 원고를 목표 분량에 맞게 완성해 주세요. 블록 제목을 ■로 표시해 주세요.`}
+async function copyText(t,msg){try{await navigator.clipboard.writeText(t);toast(msg||"복사했습니다")}catch(e){showCopyBox(t)}}
+function showCopyBox(t){modal("복사하기",`<p class="small muted">자동 복사가 막혀 있습니다. 아래 글을 모두 선택해 복사하세요.</p><textarea class="code" id="cpTA">${esc(t)}</textarea>`,"",()=>{const a=$("#cpTA");a.focus();a.select()})}
+async function download(name,data,type){
+  if(!CAP.dl&&window.lexioApp&&window.lexioApp.saveFile){try{const ok=await window.lexioApp.saveFile(name,data);if(ok)toast("저장했습니다");return true}catch(e){toast("저장하지 못했습니다");return true}}
+  if(!CAP.dl){if(!canDL())return false;const u=URL.createObjectURL(new Blob([data],{type}));const a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},1500);return true}
+  try{await CAP.dl.save({filename:name,data:new Blob([data],{type})});return true}
+  catch(e){try{await CAP.dl.save({filename:name,data});return true}catch(e2){if(e2&&/declin|cancel/i.test(e2.code||e2.message||""))return true;toast("파일 저장이 취소되었거나 실패했습니다");return true}}
+}
+function openExport(){
+  const nm=(SER.title||"설교").replace(/[\\/:*?"<>|]/g,"").slice(0,40)||"설교";
+  modal("내보내기",`
+   <div class="flist">
+    <div class="fitem"><span class="nm">원고 전체 복사<br><span class="small muted" style="font-weight:400">카카오톡·한글·워드·메모에 붙여 넣기</span></span><button class="btn" id="xCopy">복사</button></div>
+    ${canDL()?`<div class="fitem"><span class="nm">워드 파일 (.doc)<br><span class="small muted" style="font-weight:400">워드·한글에서 열립니다</span></span><button class="btn" id="xDoc">내려받기</button></div>
+    <div class="fitem"><span class="nm">텍스트 파일 (.txt)</span><button class="btn" id="xTxt">내려받기</button></div>
+    <div class="fitem"><span class="nm">백업 파일 (모든 설교)<br><span class="small muted" style="font-weight:400">다른 기기로 옮기거나 보관할 때</span></span><button class="btn" id="xBak">내려받기</button></div>`:""}
+    <div class="fitem"><span class="nm">백업 불러오기<br><span class="small muted" style="font-weight:400">${IS_APP?"웹 버전":"맥 앱"}에서 내려받은 백업 파일(.json)의 설교를 가져옵니다</span></span><button class="btn" id="xImp">불러오기</button></div>
+    <div class="fitem"><span class="nm">Claude에게 부탁할 요청문 복사<br><span class="small muted" style="font-weight:400">본문·구조·순서·메모를 담은 요청문 → Claude 앱에 붙여 넣기 (추가 비용 없음)</span></span><button class="btn gold" id="xAI">복사</button></div>
+    <div class="fitem"><span class="nm">설교 원고 보기<br><span class="small muted" style="font-weight:400">아이패드로 큰 글씨 원고 보기</span></span><button class="btn" id="xP">열기</button></div>
+   </div>`);
+  $("#xCopy").onclick=()=>copyText(plainText(),"원고를 복사했습니다");
+  $("#xAI").onclick=()=>copyText(claudePrompt(),"요청문을 복사했습니다. Claude 앱에 붙여 넣으세요");
+  $("#xP").onclick=()=>{closeModal();openPulpit()};
+  $("#xImp").onclick=()=>$("#bakIn").click();
+  if(canDL()){$("#xDoc").onclick=()=>download(nm+".doc","﻿"+docHTML(),"application/msword");
+    $("#xTxt").onclick=()=>download(nm+".txt","﻿"+plainText(),"text/plain;charset=utf-8");
+    $("#xBak").onclick=()=>download("렉시오_백업_"+new Date().toISOString().slice(0,10)+".json",JSON.stringify(LIST.map(m=>ls.get("sw.s."+m.id,null)).filter(Boolean)),"application/json")}
+}
+function openPulpit(){
+  const p=SER.passage;let size=ls.get("sw.pSize",30);let dark=ls.get("sw.pDark",false);
+  const el=document.createElement("div");el.className="pulpit"+(dark?" dark":"");
+  const draw=()=>{el.querySelector(".pdoc").style.fontSize=size+"px"};
+  let ptxt="";if(p&&LIB.length){const label=(LIB.find(x=>/개역개정/.test(x.label)&&x.kind!=="c")||{}).label||ST.prim;const ts=[];for(let v=p.v1;v<=p.v2;v++){const s=verseText(label,p.b,p.c,v);if(s)ts.push(`<sup style="opacity:.5;font-size:.55em">${v}</sup>${esc(s)}`)}ptxt=ts.join(" ")}
+  el.innerHTML=`<div class="pbar"><span class="sp">${esc(SER.title||"")}</span><button class="btn sm" data-z="-">가−</button><button class="btn sm" data-z="+">가+</button><button class="btn sm" data-d>밤/낮</button><button class="btn sm primary" data-x>닫기</button></div>
+   <div class="pdoc"><h1>${esc(SER.title||"제목 없는 설교")}</h1><div class="pp">${p?esc(p.label):""}</div>
+   ${ptxt?`<div class="pt" style="opacity:.8;margin-bottom:1em">${ptxt}</div>`:""}
+   ${SER.blocks.map(b=>`<h4>${esc(b.title)}</h4><div class="pt">${esc(b.text||"")}</div>`).join("")}</div>`;
+  document.body.appendChild(el);draw();
+  el.onclick=e=>{const t=e.target;if(t.dataset.z){size=Math.max(16,Math.min(60,size+(t.dataset.z==="+"?2:-2)));ls.set("sw.pSize",size);draw()}if(t.hasAttribute("data-d")){dark=!dark;ls.set("sw.pDark",dark);el.classList.toggle("dark",dark)}if(t.hasAttribute("data-x"))el.remove()};
+}
+
+async function importBackup(f){
+  let arr;try{arr=JSON.parse(await f.text())}catch(e){return toast("백업 파일을 읽을 수 없습니다")}
+  if(!Array.isArray(arr))arr=[arr];let add=0,upd=0,same=0;
+  for(const s of arr){if(!s||!s.id||!Array.isArray(s.blocks))continue;const loc=ls.get("sw.s."+s.id,null);
+    if(loc&&(loc.updated||0)>=(s.updated||0)){same++;continue}
+    loc?upd++:add++;ls.set("sw.s."+s.id,s);const i=LIST.findIndex(x=>x.id===s.id);const m=metaOf(s);if(i>=0)LIST[i]=m;else LIST.push(m);
+    if(CAP.db&&CAP.uid){try{await CAP.db.collection("data/users/"+CAP.uid).doc("s_"+s.id).set(s)}catch(e){}}
+    if(SER&&SER.id===s.id){SER=s;renderRight()}}
+  LIST.sort((a,b)=>(b.updated||0)-(a.updated||0));ls.set("sw.list",LIST);
+  closeModal();toast(`새 설교 ${add}편, 최신으로 바꾼 설교 ${upd}편${same?` (이미 최신 ${same}편)`:""}`,3500);
+}
+
+/* ============ 모달 ============ */
+function modal(title,body,foot,after){
+  closeModal();const s=document.createElement("div");s.className="scrim";s.id="scrim";
+  s.innerHTML=`<div class="modal"><div class="mhead"><h2>${title}</h2><button class="iconbtn" data-close>✕</button></div><div class="mbody">${body}</div>${foot?`<div class="mfoot">${foot}</div>`:""}</div>`;
+  document.body.appendChild(s);s.onclick=e=>{if(e.target===s||e.target.closest("[data-close]"))closeModal()};after&&after();
+}
+function closeModal(){const s=$("#scrim");s&&s.remove()}
+function openList(){
+  const draw=f=>{const items=LIST.filter(m=>!f||((m.title||"")+(m.passage||"")+(m.place||"")).includes(f)).sort((a,b)=>(b.updated||0)-(a.updated||0));
+    $("#slist").innerHTML=items.length?items.map(m=>`<div class="si" data-id="${m.id}"><div class="t"><b>${esc(m.title||"제목 없는 설교")}</b><span>${esc(m.passage||"본문 미정")} · ${esc(m.date||"")} ${esc(m.place||"")} · ${(m.chars||0).toLocaleString()}자</span></div>${m.id===SER.id?`<span class="chip on">작성 중</span>`:""}<button class="btn sm ghost" data-dup="${m.id}">복제</button><button class="btn sm ghost" data-del="${m.id}">삭제</button></div>`).join(""):`<div class="empty">설교가 없습니다.</div>`;
+    document.querySelectorAll("#slist .si").forEach(r=>r.onclick=e=>{if(e.target.closest("button"))return;loadSermon(r.dataset.id);closeModal()});
+    document.querySelectorAll("[data-dup]").forEach(b=>b.onclick=()=>{const s=ls.get("sw.s."+b.dataset.dup,null);if(!s)return;const n=JSON.parse(JSON.stringify(s));n.id=uid();n.title=(s.title||"설교")+" (복사본)";n.updated=Date.now();SER=n;saveLocal();saveRemote();renderRight();closeModal();toast("복제했습니다")});
+    document.querySelectorAll("[data-del]").forEach(b=>b.onclick=async()=>{if(!b.dataset.sure){b.dataset.sure=1;b.textContent="정말 삭제";b.style.color="var(--bad)";return}const id=b.dataset.del;LIST=LIST.filter(x=>x.id!==id);ls.set("sw.list",LIST);try{localStorage.removeItem("sw.s."+id)}catch(e){}if(CAP.db&&CAP.uid){try{await CAP.db.collection("data/users/"+CAP.uid).doc("s_"+id).delete()}catch(e){}}if(SER.id===id){SER=LIST.length?ls.get("sw.s."+LIST[0].id,null)||newSermon():newSermon();renderRight()}draw($("#sq").value)})};
+  modal("설교 목록",`<input id="sq" placeholder="제목·본문·예배로 찾기" style="width:100%;border:1px solid var(--line2);border-radius:9px;padding:8px 12px;margin-bottom:8px;background:var(--panel)"><div class="slist" id="slist"></div>`,`<button class="btn primary" id="lNew">+ 새 설교</button>`,()=>{draw("");$("#sq").oninput=e=>draw(e.target.value);$("#lNew").onclick=()=>{SER=newSermon();saveLocal();renderRight();closeModal()}});
+}
+function openSettings(){hideSelPop();
+  const fmt=n=>n>1048576?(n/1048576).toFixed(1)+"MB":Math.round(n/1024)+"KB";
+  modal("설정 · 성경 자료",`
+   <div class="drop" id="drop"><b>베들레헴 파일을 여기에 끌어 놓거나</b><br><button class="btn primary" id="sPick" style="margin-top:8px">파일 고르기</button><div class="small muted" style="margin-top:6px">.bdb(성경) · .sdb(스트롱 코드 성경) · .cdb(주석) — ${window.LX_HOST?"이 기기와 내 구글 드라이브에만 보관됩니다":"이 기기 안에만 저장됩니다"}</div></div>
+   <div class="flist">${LIB.length?LIB.map(x=>`<div class="fitem"><span class="kind ${x.kind}">${x.kind==="s"?"원어연결":x.kind==="c"?"주석":isOrig(x)?"원어":"성경"}</span><span class="nm">${esc(x.label)}</span><span class="small muted">${fmt(x.size||0)}</span><button class="iconbtn" data-rmf="${esc(x.name)}" title="빼기">✕</button></div>`).join(""):`<div class="empty">아직 불러온 자료가 없습니다.</div>`}</div>
+   <h3 style="margin:22px 0 4px;font-size:15px">읽기·쓰기 설정</h3>
+   <div class="setrow"><span class="l">본문 글꼴</span><select class="sel" id="oFont">${["Noto Serif KR","Gowun Batang","Nanum Myeongjo","Noto Sans KR"].map(f=>`<option ${S.readFont===f?"selected":""} value="${f}">${{"Noto Serif KR":"본명조 (기본)","Gowun Batang":"고운바탕","Nanum Myeongjo":"나눔명조","Noto Sans KR":"본고딕"}[f]}</option>`).join("")}</select></div>
+   <div class="setrow"><span class="l">성경 글자 크기</span><span><input type="range" id="oRS" min="14" max="30" value="${S.readSize}"> <b id="oRSv">${S.readSize}</b></span></div>
+   <div class="setrow"><span class="l">원어·주석·검색 글자 크기<small>연구 창 위쪽 ‘가− 가+’로도 바꿀 수 있습니다</small></span><span><input type="range" id="oSS" min="12" max="24" value="${S.studySize}"> <b id="oSSv">${S.studySize}</b></span></div>
+   <div class="setrow"><span class="l">원고 글자 크기</span><span><input type="range" id="oES" min="14" max="26" value="${S.editSize}"> <b id="oESv">${S.editSize}</b></span></div>
+   <div class="setrow"><span class="l">성경 줄 간격</span><span><input type="range" id="oLH" min="1.4" max="2.4" step="0.05" value="${S.readLH}"> <b id="oLHv">${S.readLH}</b></span></div>
+   <h3 style="margin:22px 0 4px;font-size:15px">화면 꾸미기</h3>
+   <div class="setrow"><span class="l">색 테마<small>밤 모드를 켜면 밤 색이 먼저입니다</small></span><span class="themes" id="oTheme">${[["","기본 종이","#f4f1ea","#1f4e5f"],["white","하양","#ffffff","#1f4e5f"],["sepia","세피아","#efe6d4","#7a4b26"],["green","숲","#eef1ec","#2f5d46"],["navy","남색","#eef1f6","#24407a"]].map(([k,n,a,b])=>`<button data-th="${k}" class="${S.theme===k?"on":""}"><i style="background:linear-gradient(135deg,${a} 50%,${b} 50%);border:1px solid #ccc"></i>${n}</button>`).join("")}</span></div>
+   <div class="setrow"><span class="l">화면 배치<small>성경과 원고 사이 경계선, 연구 창 위쪽 경계선을 마우스로 끌면 크기가 바뀝니다</small></span><button class="btn sm" id="oLayout">처음 배치로</button></div>
+   <div class="setrow"><span class="l">설교 속도<small>분당 글자 수(공백 제외). 보통 250~320자</small></span><span><input type="number" id="oCpm" min="150" max="450" value="${S.cpm}" style="width:76px;border:1px solid var(--line2);border-radius:8px;padding:5px 8px;background:var(--panel)"> 자/분</span></div>
+   <div class="setrow"><span class="l">세례 / 침례 표기<small>베들레헴 한글 성경은 ‘세례’가 ‘침례’로 바뀌어 있습니다. ‘세례’를 고르면 원문(대한성서공회) 표기로 보여 줍니다. 킹흠정역·한글킹은 원래 표기 그대로입니다.</small></span><select class="sel" id="oBap"><option value="세례" ${S.baptism==="세례"?"selected":""}>세례 (원문대로)</option><option value="침례" ${S.baptism==="침례"?"selected":""}>침례 (파일 그대로)</option></select></div>
+   <div class="setrow"><span class="l">밤 모드</span><input type="checkbox" id="oNight" ${S.night?"checked":""}></div>
+   <div class="setrow" style="border:none"><span class="l">기능 상태<small>${IS_APP?"맥 앱 버전 — 인터넷 없이 동작합니다. 설교는 이 맥에 저장되며, 웹 버전과는 ‘내보내기 → 백업’으로 옮깁니다":CAP.db?(window.LX_HOST?"설교가 내 구글 드라이브 ‘렉시오’ 폴더에 저장되어 컴퓨터·아이패드·휴대폰에서 함께 보입니다":"설교가 Claude 계정에 저장되어 맥·아이패드에서 함께 보입니다"):"설교가 이 기기 브라우저에만 저장됩니다 — 내보내기에서 백업해 두세요"}<br>${CAP.ai?(CAP.aiName!=="Claude"?`AI 도우미: ${esc(CAP.aiName)} 연결됨 (각 블록의 ✦ 도움)`:"AI 도우미 사용 가능 (Claude 구독 안에서 동작)"):keyAI()?"AI 도우미 꺼짐 — 아래 ‘AI 연결’에서 키를 넣으세요":"AI 도우미 없음 — 내보내기의 ‘Claude 요청문 복사’를 쓰세요"}</small></span></div>
+   ${window.LX_settingsHTML?window.LX_settingsHTML():""}
+   ${appAIHTML()}
+   <div class="setrow" style="display:block"><span class="l">AI 지침<small>AI 도우미와 ‘Claude 요청문’ 맨 앞에 들어가는 안내문입니다. 교단·신학 전통에 맞게 고쳐 쓰세요. 비우면 기본값으로 돌아갑니다.</small></span>
+   <textarea id="oGuide" rows="5" style="width:100%;margin-top:6px;border:1px solid var(--line2);border-radius:8px;padding:8px 10px;background:var(--panel);font-size:13px;line-height:1.6">${esc(sysText())}</textarea></div>
+   <p class="small" style="margin-top:10px"><a href="${SITE}" target="_blank" rel="noopener">렉시오 홈페이지</a> · <a href="${SITE}guide.html" target="_blank" rel="noopener">사용 설명서</a> · <a href="${PACK_URL}" target="_blank" rel="noopener">공개 성경 묶음 받기</a></p>
+   <p class="small muted" style="margin-top:14px">원어 사전: Strong's Hebrew & Greek Dictionary (퍼블릭 도메인, JSON: Open Scriptures CC-BY-SA). 성경·주석 자료의 저작권은 각 저작권자에게 있으며, 이 프로그램은 개인 연구용입니다.</p>
+   <p class="small" style="margin-top:6px;color:var(--ink2)">렉시오 · 만든 사람 <b>이세진 목사</b> · 피드백 <b>bear4jesus@gmail.com</b></p>`);
+  $("#sPick").onclick=()=>$("#fileIn").click();
+  const d=$("#drop");d.ondragover=e=>{e.preventDefault();d.classList.add("over")};d.ondragleave=()=>d.classList.remove("over");d.ondrop=e=>{e.preventDefault();d.classList.remove("over");addFiles(e.dataTransfer.files)};
+  document.querySelectorAll("[data-rmf]").forEach(b=>b.onclick=async()=>{const n=b.dataset.rmf;const i=LIB.findIndex(x=>x.name===n);if(i>=0){try{LIB[i].db&&LIB[i].db.close()}catch(e){}LIB.splice(i,1)}await IDB.del(n);saveMeta();openSettings();renderLeft()});
+  $("#oFont").onchange=e=>{S.readFont=e.target.value;applySettings()};
+  $("#oRS").oninput=e=>{S.readSize=+e.target.value;$("#oRSv").textContent=S.readSize;applySettings()};
+  $("#oSS").oninput=e=>{S.studySize=+e.target.value;$("#oSSv").textContent=S.studySize;applySettings()};
+  $("#oLH").oninput=e=>{S.readLH=+e.target.value;$("#oLHv").textContent=S.readLH;applySettings()};
+  document.querySelectorAll("#oTheme [data-th]").forEach(b=>b.onclick=()=>{S.theme=b.dataset.th;applySettings();document.querySelectorAll("#oTheme [data-th]").forEach(x=>x.classList.toggle("on",x===b))});
+  $("#oLayout").onclick=()=>{S.leftW=33.3;S.studyH=44;S.leftMode=0;applySettings();toast("처음 배치로 돌렸습니다")};
+  window.LX_bindSettings&&window.LX_bindSettings();
+  $("#oES").oninput=e=>{S.editSize=+e.target.value;$("#oESv").textContent=S.editSize;applySettings();document.querySelectorAll(".block textarea").forEach(autosize)};
+  $("#oCpm").oninput=e=>{S.cpm=Math.max(100,+e.target.value||280);applySettings();renderFooter()};
+  $("#oNight").onchange=e=>{S.night=e.target.checked;applySettings()};
+  bindAppAI();
+  const og=$("#oGuide");og&&(og.onchange=()=>{const v=og.value.trim();S.aiGuide=(v===SYS_DEFAULT.trim())?"":v;applySettings();if(!v)og.value=SYS_DEFAULT;toast("AI 지침을 저장했습니다")});
+  $("#oBap").onchange=e=>{S.baptism=e.target.value;applySettings();IDX.ready=false;IDX.label=null;renderLeft();buildIndex().then(()=>{if(ST.word)renderStudy()})};
+}
+function showRight(r){$("#main").classList.toggle("showRight",r);$("#mL").classList.toggle("on",!r);$("#mR").classList.toggle("on",r)}
+
+
+/* ============ 선택한 글 → 연구 메모 · 설교 ============ */
+function selInfo(){
+  const s=window.getSelection();if(!s||s.isCollapsed)return null;const t=(s+"").replace(/\s+\n/g,"\n").trim();if(!t)return null;
+  const el=n=>n&&(n.nodeType===1?n:n.parentElement);const a=el(s.anchorNode),f=el(s.focusNode);if(!a||!a.closest("#left"))return null;
+  let src="",bible=false;
+  if(a.closest("#ltext")){const va=a.closest("[data-v]"),vf=f&&f.closest("[data-v]");if(va){const x=+va.dataset.v,y=vf?+vf.dataset.v:x;src=ST.prim+" · "+ref(ST.book,ST.ch,Math.min(x,y),Math.max(x,y));bible=true}}
+  else if(a.closest(".cmt"))src=(ST.cmt||"주석")+(ST.cmtRef?" · "+ST.cmtRef:"");
+  else if(a.closest("#sbody"))src={orig:"원어",occ:"용례",find:"검색"}[ST.tab]||"";
+  return{t:bible?t.replace(/(^|\s)\d{1,3}(?=\S)/g,"$1").replace(/\s+/g," ").trim():t,src,bible};
+}
+function selToNote(){const i=selInfo();if(!i)return toast("왼쪽 성경·원어·주석에서 넣을 글을 먼저 드래그해 고르세요");appendNote((i.src?`[${i.src}] `:"")+i.t);hideSelPop()}
+function selToSermon(){const i=selInfo();if(!i)return toast("왼쪽 성경·원어·주석에서 넣을 글을 먼저 드래그해 고르세요");const ref2=i.src.split(" · ").slice(1).join(" · ");insertText(i.bible?`「${i.t}」(${ref2})`:i.t+(i.src?` (${i.src})`:""));hideSelPop()}
+function hideSelPop(){const p=document.querySelector(".selpop");p&&p.remove()}
+function showSelPop(x,y){
+  hideSelPop();if(!selInfo())return;
+  const p=document.createElement("div");p.className="selpop";
+  p.innerHTML=`<button data-k="n">연구 메모에 넣기</button><button data-k="s">설교에 넣기</button><span class="sep"></span><button data-k="c">복사</button>`;
+  p.onmousedown=e=>e.preventDefault();
+  p.onclick=e=>{const k=e.target.dataset.k;if(k==="n")selToNote();if(k==="s")selToSermon();if(k==="c"){let ok=false;try{ok=document.execCommand("copy")}catch(e){}if(!ok){const i=selInfo();i&&navigator.clipboard&&navigator.clipboard.writeText(i.t).catch(()=>{})}toast("복사했습니다",1000);hideSelPop()}};
+  document.documentElement.appendChild(p);
+  const w=p.offsetWidth,h=p.offsetHeight;p.style.left=Math.max(8,Math.min(innerWidth-w-8,x-w/2))+"px";p.style.top=(y-h-10<8?y+16:y-h-10)+"px";
+}
+function bindSelTools(){
+  const L=$("#left");
+  const fromSel=()=>{const s=window.getSelection();if(!s||s.isCollapsed||!s.rangeCount)return hideSelPop();const r=s.getRangeAt(0).getBoundingClientRect();if(!r.width&&!r.height)return;showSelPop(r.left+r.width/2,r.top)};
+  L.addEventListener("mouseup",()=>setTimeout(fromSel,10));
+  L.addEventListener("touchend",()=>setTimeout(fromSel,350));
+  L.addEventListener("contextmenu",e=>{if(selInfo()){e.preventDefault();showSelPop(e.clientX,e.clientY+40)}});
+  document.addEventListener("selectionchange",()=>{const s=window.getSelection();if(!s||s.isCollapsed)setTimeout(()=>{const t=window.getSelection();if(!t||t.isCollapsed)hideSelPop()},150)});
+  L.addEventListener("scroll",hideSelPop,true);
+  document.addEventListener("mousedown",e=>{if(!e.target.closest(".selpop")&&!e.target.closest("#left"))hideSelPop()},true);
+  document.addEventListener("keydown",e=>{if(window.lexioApp)return;if((e.metaKey||e.ctrlKey)&&e.shiftKey&&!e.altKey){const k=e.key.toLowerCase();if(k==="m"){e.preventDefault();selToNote()}else if(k==="i"){e.preventDefault();selToSermon()}}});
+}
+function dragResize(handle,onMove,row){
+  handle.addEventListener("pointerdown",e=>{e.preventDefault();handle.setPointerCapture(e.pointerId);handle.classList.add("on");document.body.classList.add("dragging");document.body.classList.toggle("row",!!row);
+    const mv=ev=>onMove(ev);const up=()=>{handle.classList.remove("on");document.body.classList.remove("dragging","row");handle.removeEventListener("pointermove",mv);handle.removeEventListener("pointerup",up);ls.set("sw.settings",S)};
+    handle.addEventListener("pointermove",mv);handle.addEventListener("pointerup",up)});
+}
+function bindSplit(){
+  const m=$("#main");if(!m||$("#vsplit"))return;const h=document.createElement("div");h.className="vsplit";h.id="vsplit";h.title="끌어서 너비 조절 · 두 번 누르면 처음대로";m.appendChild(h);
+  dragResize(h,e=>{const r=m.getBoundingClientRect();S.leftW=Math.round(Math.max(18,Math.min(70,(e.clientX-r.left)/r.width*100))*10)/10;S.leftMode=0;document.documentElement.style.setProperty("--lw",S.leftW+"%");m.classList.remove("wideLeft","noLeft")});
+  h.ondblclick=()=>{S.leftW=33.3;applySettings()};
+}
+function bindStudyGrip(){
+  const g=$("#sgrip"),L=$("#left");if(!g)return;
+  dragResize(g,e=>{const r=L.getBoundingClientRect();S.studyH=Math.round(Math.max(15,Math.min(85,(r.bottom-e.clientY)/r.height*100)));document.documentElement.style.setProperty("--sh",S.studyH+"%")},true);
+  g.ondblclick=()=>{S.studyH=44;applySettings()};
+}
+
+/* ============ 시작 ============ */
+async function start(){
+  applySettings();bindSplit();bindSelTools();
+  if(window.lexioApp&&window.lexioApp.onMenu)window.lexioApp.onMenu(k=>{if(k==="selNote")selToNote();if(k==="selIns")selToSermon();if(k==="pulpit")openPulpit();if(k==="settings")openSettings()});
+  $("#bList").onclick=openList;$("#bExport").onclick=openExport;$("#bPulpit").onclick=openPulpit;$("#bSet").onclick=openSettings;
+  $("#bLeft").onclick=()=>{S.leftMode=(S.leftMode+1)%3;applySettings()};
+  $("#mL").onclick=()=>showRight(false);$("#mR").onclick=()=>showRight(true);
+  $("#bakIn").onchange=e=>{const f=e.target.files[0];e.target.value="";if(f)importBackup(f)};
+  $("#fileIn").onchange=e=>{const fl=[...e.target.files];e.target.value="";addFiles(fl)};
+  document.addEventListener("keydown",e=>{if(e.target.matches("input,textarea,select"))return;if(e.key==="ArrowLeft"&&LIB.length)step(-1);if(e.key==="ArrowRight"&&LIB.length)step(1)});
+  // 설교 먼저 띄우기
+  const cur=ls.get("sw.cur",null);SER=(cur&&ls.get("sw.s."+cur,null))||newSermon();if(!LIST.find(x=>x.id===SER.id))saveLocal();
+  renderRight();$("#topTitle").textContent=SER.title||"제목 없는 설교";setStatus("local");
+  $("#left").innerHTML=`<div class="empty" style="margin-top:40px"><span class="spin"></span> 성경 자료를 여는 중…</div>`;
+  loadLex().then(()=>{if(ST.word)renderStudy()});
+  await initSQL();
+  await IDB.open();
+  let meta=ls.get("sw.libmeta",null);
+  if(!meta){const saved=await IDB.all();meta=saved.map(f=>({name:f.name,label:f.label||labelOf(f.name),kind:f.kind||kindOf(f.name),size:f.size}))}
+  for(const f of meta){const label=nfc(f.label);if(!LIB.some(x=>x.label===label))LIB.push({name:f.name,label,kind:f.kind,size:f.size,bytes:null,db:null})}
+  ST.prim=nfc(ST.prim);ST.cmp=(ST.cmp||[]).map(nfc);ST.cmt=nfc(ST.cmt);FIND.label=nfc(FIND.label);
+  LIB.sort(sortLib);saveMeta();
+  renderLeft();
+  if(LIB.some(x=>x.kind==="s"))setTimeout(()=>buildIndex().then(()=>{if(ST.word)renderStudy()}),300);
+  // Claude 기능
+  cap("db").then(async d=>{if(!d)return;const u=await cap("user");let id=null;try{id=u&&await u.id()}catch(e){}if(!id)return;CAP.db=d;CAP.uid=id;await pullRemote();
+    // 새 기기에서 자동으로 생긴 빈 설교는 올리지 않고, 가장 최근 설교를 엽니다
+    const blank=x=>x&&!x.title&&!x.passage&&!x.bigIdea&&!x.notes&&!x.type&&!(x.blocks||[]).some(b=>(b.text||"").trim());
+    if(blank(SER)&&LIST.some(m=>m.id!==SER.id)){const old=SER.id;LIST=LIST.filter(m=>m.id!==old);ls.set("sw.list",LIST);try{localStorage.removeItem("sw.s."+old)}catch(e){}LIST.sort((a,b)=>(b.updated||0)-(a.updated||0));loadSermon(LIST[0].id);setStatus("synced")}else saveRemote()});
+  cap("downloads").then(d=>{CAP.dl=d});
+  cap("sample").then(a=>{if(a){CAP.ai=a;CAP.aiName="Claude";if(SER.stage===4)renderStage()}else if(keyAI())initAppAI()});
+  if(IS_APP)initAppAI();setDocTitle();
+}
+start();
+</script>
+<script>
+// 렉시오 맥 앱: 새 버전 알림 (홈페이지 version.json) · 도움말 메뉴의 '새 버전 확인'
+(function () {
+  var A = window.lexioApp; if (!A || !A.fetchJson) return;
+  var HOME = 'https://shepherdsdesk.github.io/lexio/', CUR = A.version || '';
+  function num(v) { return String(v || '').split('.').map(function (n) { return parseInt(n, 10) || 0; }); }
+  function newer(a, b) { var x = num(a), y = num(b); for (var i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; }
+  function esc(t) { return String(t || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function say(m) { if (typeof toast === 'function') toast(m, 3200); }
+  function dl(info) { A.openUrl((info && info.mac) || HOME + 'install.html#update'); }
+  function notes(info) {
+    var o = document.createElement('div'); o.className = 'lx-upd-ov';
+    o.innerHTML = '<div class="lx-upd-box"><h3>새 버전 ' + esc(info.version) + (info.date ? ' <small>' + esc(info.date) + '</small>' : '') + '</h3><p class="lx-dim">지금 쓰시는 버전: ' + esc(CUR) + '</p><ul>' + (info.notes || []).map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul><p class="lx-dim">새 DMG를 받아 응용 프로그램 폴더에 덮어쓰면 됩니다. 원고와 성경 자료는 그대로 남습니다.</p><div class="lx-row"><button class="btn sm ghost" data-k="help">설치 도움말</button><span style="flex:1"></span><button class="btn sm" data-k="close">닫기</button><button class="btn sm primary" data-k="get">내려받기</button></div></div>';
+    o.addEventListener('click', function (e) { var k = e.target.getAttribute && e.target.getAttribute('data-k'); if (e.target === o || k === 'close') o.remove(); if (k === 'get') { dl(info); o.remove(); } if (k === 'help') A.openUrl(HOME + 'install.html#update'); });
+    document.body.appendChild(o);
+  }
+  function banner(info) {
+    try { if (localStorage.getItem('lexio.updHide') === info.version) return; } catch (_) {}
+    if (document.querySelector('.lx-upd')) return;
+    var d = document.createElement('div'); d.className = 'lx-upd';
+    d.innerHTML = '<b>새 버전 ' + esc(info.version) + '이 나왔습니다</b><span class="lx-dim">' + esc((info.notes || [])[0] || '') + '</span><button class="btn sm" data-k="notes">무엇이 바뀌었나</button><button class="btn sm primary" data-k="get">내려받기</button><button class="btn sm ghost" data-k="x" title="이 버전 알림 닫기">✕</button>';
+    d.addEventListener('click', function (e) { var k = e.target.getAttribute('data-k'); if (k === 'notes') notes(info); if (k === 'get') dl(info); if (k === 'x') { try { localStorage.setItem('lexio.updHide', info.version); } catch (_) {} d.remove(); } });
+    document.body.appendChild(d);
+  }
+  async function check(manual) {
+    var info = null; try { info = await A.fetchJson(HOME + 'version.json'); } catch (_) {}
+    if (!info || !info.version) { if (manual) say('홈페이지에 연결하지 못했습니다 · 인터넷 연결을 확인해 주세요'); return; }
+    if (newer(info.version, CUR)) { if (manual) notes(info); else banner(info); }
+    else if (manual) say('지금 쓰시는 버전이 최신입니다 (' + CUR + ')');
+  }
+  window.lexioCheckUpdate = check;
+  A.onMenu(function (k) { if (k === 'update') check(true); });
+  setTimeout(function () { check(false); }, 4000);
+  setInterval(function () { check(false); }, 6 * 3600e3);
+  var st = document.createElement('style');
+  st.textContent = '.lx-upd{position:fixed;left:50%;transform:translateX(-50%);top:64px;z-index:60;display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:calc(100vw - 32px);background:#eaf2ec;border:1px solid #cfe0d3;border-radius:12px;padding:8px 10px 8px 14px;box-shadow:0 10px 30px rgba(30,50,35,.15);font-size:13.5px}.lx-upd b{color:#2e5b3e}.lx-dim{color:#777;font-size:13px}.lx-upd-ov{position:fixed;inset:0;z-index:70;background:rgba(20,20,15,.35);display:grid;place-items:center}.lx-upd-box{background:#fff;border-radius:14px;padding:22px 24px;max-width:480px;width:calc(100vw - 40px);box-shadow:0 20px 60px rgba(0,0,0,.25)}.lx-upd-box h3{margin:0 0 4px;font-size:18px}.lx-upd-box h3 small{font-weight:400;color:#888;font-size:13px}.lx-upd-box ul{margin:12px 0;padding-left:1.2em;display:grid;gap:6px;font-size:14px}.lx-row{display:flex;gap:6px;align-items:center;margin-top:14px}';
+  document.head.appendChild(st);
+})();
+</script>
+</body>
+</html>
