@@ -1,7 +1,7 @@
 // 렉시오 홈페이지 설정 — 구글 웹 버전 '사본 링크'를 여기에 넣으세요.
 // 앱스크립트 원본 프로젝트 → 공유 → '링크가 있는 모든 사용자 · 뷰어' → 링크 복사
 window.LX_CONFIG = {
-  webCopy: ''
+  webCopy: 'https://script.google.com/d/1TrgQeO0sFUJ66Tz2gJ5jTQLUAmX5D0kTjorgA8JDaUQ32cQ9ouvsn3Fl/edit?usp=sharing'
 };
 (function () {
   function apply() {
