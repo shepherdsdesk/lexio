@@ -26,7 +26,7 @@
 
 1. 이 폴더의 파일을 저장소 `shepherdsdesk/lexio`의 `main` 브랜치 맨 위에 올립니다.
 2. 저장소 **Settings → Pages → Build and deployment**에서 Source를 *Deploy from a branch*, Branch를 `main` / `(root)`로 저장합니다.
-3. **Releases → Draft a new release** → 태그 `v1.2.0` → `Lexio-AppleSilicon.dmg`, `Lexio-bible-pack.zip`을 첨부해 게시합니다.
+3. **Releases → Draft a new release** → 태그 `v1.2.1` → `Lexio-AppleSilicon.dmg`, `Lexio-bible-pack.zip`을 첨부해 게시합니다.
    홈페이지의 내려받기 단추는 `releases/latest/download/파일이름`을 가리키므로, 다음 버전에서도 **파일 이름을 그대로** 두면 링크가 자동으로 최신을 가리킵니다.
 
 다른 계정이나 저장소 이름을 쓰면 모든 파일에서 `shepherdsdesk/lexio`와 `shepherdsdesk.github.io/lexio`를 찾아 바꿔 주세요(`app/index.html`의 `SITE`, `PACK_URL` 포함).

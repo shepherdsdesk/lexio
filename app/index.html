@@ -165,7 +165,7 @@ body.night .chip.prim{color:#0f1a1d}
 
 /* right panel */
 .rscroll{flex:1;overflow:auto;min-height:0}
-.rwrap{max-width:860px;margin:0 auto;padding:22px 28px 140px}
+.rwrap{max-width:var(--rw,860px);margin:0 auto;padding:22px 28px 140px}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
 .head{padding:18px 20px}
 .tinput{width:100%;border:none;background:transparent;font-family:var(--read);font-size:26px;font-weight:700;padding:2px 0;outline:none;letter-spacing:-.01em}
@@ -234,9 +234,9 @@ body.night .bno{color:#0f1a1d}
 .menu button:hover{background:var(--panel)}
 
 .footer{position:sticky;bottom:0;background:linear-gradient(to top,var(--bg) 70%,transparent);padding:14px 28px 14px}
-.fbar{max-width:860px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:10px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.fbar{max-width:var(--rw,860px);margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:10px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .meter{flex:1;min-width:140px}
-.credit{max-width:860px;margin:6px auto 0;text-align:center;font-size:11.5px;color:var(--ink3)}
+.credit{max-width:var(--rw,860px);margin:6px auto 0;text-align:center;font-size:11.5px;color:var(--ink3)}
 .credit a{color:var(--ink3);text-decoration:underline;text-underline-offset:2px}
 .linkbtn{border:none;background:none;padding:0 2px;font-size:11.5px;color:var(--ink3);text-decoration:underline;text-underline-offset:2px}
 .meter .bar{height:7px;background:var(--line);border-radius:4px;overflow:hidden}
@@ -370,11 +370,11 @@ const ls={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.par
 const cnt=s=>(s||"").replace(/\s/g,"").length;
 
 /* ============ 설정 ============ */
-const S=Object.assign({baptism:"세례",readFont:"Noto Serif KR",readSize:18,editSize:17,studySize:15,readLH:1.85,theme:"",leftW:33.3,studyH:44,cpm:280,night:false,leftMode:0},ls.get("sw.settings",{}));
+const S=Object.assign({baptism:"세례",readFont:"Noto Serif KR",readSize:18,editSize:17,studySize:15,readLH:1.85,writeW:860,theme:"",leftW:33.3,studyH:44,cpm:280,night:false,leftMode:0},ls.get("sw.settings",{}));
 function applySettings(){
   const r=document.documentElement.style;
   r.setProperty("--read",`'${S.readFont}',serif`);
-  r.setProperty("--readSize",S.readSize+"px");r.setProperty("--editSize",S.editSize+"px");r.setProperty("--studySize",S.studySize+"px");r.setProperty("--readLH",S.readLH);
+  r.setProperty("--readSize",S.readSize+"px");r.setProperty("--editSize",S.editSize+"px");r.setProperty("--studySize",S.studySize+"px");r.setProperty("--readLH",S.readLH);r.setProperty("--rw",S.writeW>=1600?"100%":S.writeW+"px");
   r.setProperty("--lw",(S.leftMode===1?50:S.leftW)+"%");r.setProperty("--sh",S.studyH+"%");
   ["white","sepia","green","navy"].forEach(t=>document.body.classList.toggle("th-"+t,S.theme===t));
   document.body.classList.toggle("night",!!S.night);
@@ -488,6 +488,7 @@ function renderLeft(){
       <select class="sel" id="chSel">${Array.from({length:bk[2]},(_,i)=>`<option ${i+1===ST.ch?"selected":""}>${i+1}</option>`).join("")}</select><span class="muted small">장</span>
       <button class="iconbtn" id="nx" title="다음 장">›</button>
       <span style="flex:1"></span>
+      <button class="zbtn" data-zr="-1" title="성경 글자 작게">가−</button><button class="zbtn" data-zr="1" title="성경 글자 크게">가+</button>
       <button class="iconbtn" id="findBtn" title="성경 단어 검색"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></button>
       <div class="seg"><button data-m="single" class="${ST.mode==="single"?"on":""}">본문</button><button data-m="cmp" class="${ST.mode==="cmp"?"on":""}">대조</button></div>
     </div>
@@ -520,6 +521,7 @@ function renderLeft(){
   $("#primSel").onchange=e=>{ST.prim=e.target.value;saveView();renderLeft()};
   L.querySelectorAll("#cmpChips .chip").forEach(c=>c.onclick=()=>{const l=c.dataset.l;ST.cmp=ST.cmp.includes(l)?ST.cmp.filter(x=>x!==l):[...ST.cmp,l];saveView();renderLeft()});
   L.querySelectorAll(".stabs .t").forEach(b=>b.onclick=()=>{ST.tab=b.dataset.t;ST.studyMin=false;saveView();renderStudyTabs();renderStudy()});
+  L.querySelectorAll("[data-zr]").forEach(b=>b.onclick=()=>{S.readSize=Math.max(14,Math.min(30,S.readSize+(+b.dataset.zr)));applySettings();toast("성경 글자 "+S.readSize,900)});
   L.querySelectorAll("[data-zs]").forEach(b=>b.onclick=()=>{S.studySize=Math.max(12,Math.min(24,S.studySize+(+b.dataset.zs)));applySettings();toast("연구 창 글자 "+S.studySize,900)});
   bindStudyGrip();
   $("#stMin").onclick=()=>{ST.studyMin=!ST.studyMin;saveView();$("#study").classList.toggle("min",ST.studyMin);$("#stMin").textContent=ST.studyMin?"▴":"▾"};
@@ -672,7 +674,7 @@ function welcomeHTML(){
    ① 위의 <b>공개 성경 묶음</b>(무료)을 내려받아 압축을 풉니다 — 개역한글, KJV, ASV, YLT, Darby, BSB, 히브리어(WLC), 헬라어(TR)<br>
    ② <b>파일 고르기</b>를 누르고 풀린 폴더의 파일을 모두 고릅니다</div>
    <div class="rec"><b>가지고 계신 자료가 있다면</b><br>
-   · 베들레헴 형식(.bdb 성경 · .sdb 스트롱 코드 성경 · .cdb 주석)이면 그대로 넣을 수 있습니다<br>
+   · 성경 파일(.bdb 성경 · .sdb 스트롱 코드 성경 · .cdb 주석)이면 그대로 넣을 수 있습니다<br>
    · 스트롱 코드가 달린 성경(.sdb)을 넣으면 <b>단어를 눌러 원어</b>를 볼 수 있습니다<br>
    · 저작권이 있는 자료는 정식으로 가지신 것만 개인 연구용으로 써 주세요</div>
    <p class="small muted">아이패드에서는 ‘파일’ 앱에 저장한 파일을 고르시면 됩니다. 여러 개를 한 번에 고를 수 있습니다. · <a href="${SITE}guide.html" target="_blank" rel="noopener">사용 설명서</a></p>
@@ -852,9 +854,10 @@ function renderStage(){
     G.querySelector("[data-back]").onclick=()=>{SER.stage=2;touch();renderSteps();renderStage()};
     G.querySelector("[data-next]").onclick=()=>{SER.stage=4;touch();renderSteps();renderStage()};
   }else{
-    G.innerHTML=`<div class="summary"><b>${typeName()||"설교"}</b> · <b>${structName()||"자유 구조"}</b> · ${SER.blocks.length}개 블록 <button class="btn sm ghost" id="toOrder">순서 바꾸기</button> <button class="btn sm ghost" id="aiAll" style="display:none">✦ 전체 개요 제안</button></div>
+    G.innerHTML=`<div class="summary"><b>${typeName()||"설교"}</b> · <b>${structName()||"자유 구조"}</b> · ${SER.blocks.length}개 블록 <button class="btn sm ghost" id="toOrder">순서 바꾸기</button> <button class="btn sm ghost" id="wWidth" title="원고 칸 폭: 좁게 → 보통 → 넓게 → 꽉 채우기">↔ 원고 폭</button> <button class="btn sm ghost" id="aiAll" style="display:none">✦ 전체 개요 제안</button></div>
      <div class="blocks" id="blocks"></div>
      <div class="addbar" style="margin-top:14px">${BLOCK_LIB.slice(0,8).map(n=>`<button class="chip" data-add="${n}">+ ${n}</button>`).join("")}</div>`;
+    $("#wWidth").onclick=()=>{const st=[720,860,1100,1600],nm={720:"좁게",860:"보통",1100:"넓게",1600:"꽉 채우기"};const i=st.indexOf(S.writeW);S.writeW=st[(i+1)%st.length];applySettings();toast("원고 폭: "+nm[S.writeW],1000)};
     $("#toOrder").onclick=()=>{SER.stage=3;touch();renderSteps();renderStage()};
     G.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{SER.blocks.push({id:uid(),title:b.dataset.add,hint:"",text:""});touch();renderBlocks()});
     if(CAP.ai){const a=$("#aiAll");a.style.display="";a.onclick=()=>aiRun("outline",null)}
@@ -1134,19 +1137,20 @@ function openList(){
 function openSettings(){hideSelPop();
   const fmt=n=>n>1048576?(n/1048576).toFixed(1)+"MB":Math.round(n/1024)+"KB";
   modal("설정 · 성경 자료",`
-   <div class="drop" id="drop"><b>베들레헴 파일을 여기에 끌어 놓거나</b><br><button class="btn primary" id="sPick" style="margin-top:8px">파일 고르기</button><div class="small muted" style="margin-top:6px">.bdb(성경) · .sdb(스트롱 코드 성경) · .cdb(주석) — ${window.LX_HOST?"이 기기와 내 구글 드라이브에만 보관됩니다":"이 기기 안에만 저장됩니다"}</div></div>
+   <div class="drop" id="drop"><b>성경 파일을 여기에 끌어 놓거나</b><br><button class="btn primary" id="sPick" style="margin-top:8px">파일 고르기</button><div class="small muted" style="margin-top:6px">.bdb(성경) · .sdb(스트롱 코드 성경) · .cdb(주석) — ${window.LX_HOST?"이 기기와 내 구글 드라이브에만 보관됩니다":"이 기기 안에만 저장됩니다"}</div></div>
    <div class="flist">${LIB.length?LIB.map(x=>`<div class="fitem"><span class="kind ${x.kind}">${x.kind==="s"?"원어연결":x.kind==="c"?"주석":isOrig(x)?"원어":"성경"}</span><span class="nm">${esc(x.label)}</span><span class="small muted">${fmt(x.size||0)}</span><button class="iconbtn" data-rmf="${esc(x.name)}" title="빼기">✕</button></div>`).join(""):`<div class="empty">아직 불러온 자료가 없습니다.</div>`}</div>
    <h3 style="margin:22px 0 4px;font-size:15px">읽기·쓰기 설정</h3>
    <div class="setrow"><span class="l">본문 글꼴</span><select class="sel" id="oFont">${["Noto Serif KR","Gowun Batang","Nanum Myeongjo","Noto Sans KR"].map(f=>`<option ${S.readFont===f?"selected":""} value="${f}">${{"Noto Serif KR":"본명조 (기본)","Gowun Batang":"고운바탕","Nanum Myeongjo":"나눔명조","Noto Sans KR":"본고딕"}[f]}</option>`).join("")}</select></div>
-   <div class="setrow"><span class="l">성경 글자 크기</span><span><input type="range" id="oRS" min="14" max="30" value="${S.readSize}"> <b id="oRSv">${S.readSize}</b></span></div>
+   <div class="setrow"><span class="l">성경 글자 크기<small>성경 화면 위쪽 ‘가− 가+’로도 바꿀 수 있습니다</small></span><span><input type="range" id="oRS" min="14" max="30" value="${S.readSize}"> <b id="oRSv">${S.readSize}</b></span></div>
    <div class="setrow"><span class="l">원어·주석·검색 글자 크기<small>연구 창 위쪽 ‘가− 가+’로도 바꿀 수 있습니다</small></span><span><input type="range" id="oSS" min="12" max="24" value="${S.studySize}"> <b id="oSSv">${S.studySize}</b></span></div>
    <div class="setrow"><span class="l">원고 글자 크기</span><span><input type="range" id="oES" min="14" max="26" value="${S.editSize}"> <b id="oESv">${S.editSize}</b></span></div>
+   <div class="setrow"><span class="l">원고 칸 폭<small>설교 원고를 쓰는 칸의 너비입니다. 원고 위쪽 ‘↔ 원고 폭’ 단추로도 바꿀 수 있습니다</small></span><span><input type="range" id="oWW" min="640" max="1600" step="20" value="${S.writeW}"> <b id="oWWv">${S.writeW>=1600?"꽉":S.writeW}</b></span></div>
    <div class="setrow"><span class="l">성경 줄 간격</span><span><input type="range" id="oLH" min="1.4" max="2.4" step="0.05" value="${S.readLH}"> <b id="oLHv">${S.readLH}</b></span></div>
    <h3 style="margin:22px 0 4px;font-size:15px">화면 꾸미기</h3>
    <div class="setrow"><span class="l">색 테마<small>밤 모드를 켜면 밤 색이 먼저입니다</small></span><span class="themes" id="oTheme">${[["","기본 종이","#f4f1ea","#1f4e5f"],["white","하양","#ffffff","#1f4e5f"],["sepia","세피아","#efe6d4","#7a4b26"],["green","숲","#eef1ec","#2f5d46"],["navy","남색","#eef1f6","#24407a"]].map(([k,n,a,b])=>`<button data-th="${k}" class="${S.theme===k?"on":""}"><i style="background:linear-gradient(135deg,${a} 50%,${b} 50%);border:1px solid #ccc"></i>${n}</button>`).join("")}</span></div>
    <div class="setrow"><span class="l">화면 배치<small>성경과 원고 사이 경계선, 연구 창 위쪽 경계선을 마우스로 끌면 크기가 바뀝니다</small></span><button class="btn sm" id="oLayout">처음 배치로</button></div>
    <div class="setrow"><span class="l">설교 속도<small>분당 글자 수(공백 제외). 보통 250~320자</small></span><span><input type="number" id="oCpm" min="150" max="450" value="${S.cpm}" style="width:76px;border:1px solid var(--line2);border-radius:8px;padding:5px 8px;background:var(--panel)"> 자/분</span></div>
-   <div class="setrow"><span class="l">세례 / 침례 표기<small>베들레헴 한글 성경은 ‘세례’가 ‘침례’로 바뀌어 있습니다. ‘세례’를 고르면 원문(대한성서공회) 표기로 보여 줍니다. 킹흠정역·한글킹은 원래 표기 그대로입니다.</small></span><select class="sel" id="oBap"><option value="세례" ${S.baptism==="세례"?"selected":""}>세례 (원문대로)</option><option value="침례" ${S.baptism==="침례"?"selected":""}>침례 (파일 그대로)</option></select></div>
+   <div class="setrow"><span class="l">세례 / 침례 표기<small>일부 한글 성경 파일은 ‘세례’가 ‘침례’로 바뀌어 있습니다. ‘세례’를 고르면 원문(대한성서공회) 표기로 보여 줍니다. 킹흠정역·한글킹은 원래 표기 그대로입니다.</small></span><select class="sel" id="oBap"><option value="세례" ${S.baptism==="세례"?"selected":""}>세례 (원문대로)</option><option value="침례" ${S.baptism==="침례"?"selected":""}>침례 (파일 그대로)</option></select></div>
    <div class="setrow"><span class="l">밤 모드</span><input type="checkbox" id="oNight" ${S.night?"checked":""}></div>
    <div class="setrow" style="border:none"><span class="l">기능 상태<small>${IS_APP?"맥 앱 버전 — 인터넷 없이 동작합니다. 설교는 이 맥에 저장되며, 웹 버전과는 ‘내보내기 → 백업’으로 옮깁니다":CAP.db?(window.LX_HOST?"설교가 내 구글 드라이브 ‘렉시오’ 폴더에 저장되어 컴퓨터·아이패드·휴대폰에서 함께 보입니다":"설교가 Claude 계정에 저장되어 맥·아이패드에서 함께 보입니다"):"설교가 이 기기 브라우저에만 저장됩니다 — 내보내기에서 백업해 두세요"}<br>${CAP.ai?(CAP.aiName!=="Claude"?`AI 도우미: ${esc(CAP.aiName)} 연결됨 (각 블록의 ✦ 도움)`:"AI 도우미 사용 가능 (Claude 구독 안에서 동작)"):keyAI()?"AI 도우미 꺼짐 — 아래 ‘AI 연결’에서 키를 넣으세요":"AI 도우미 없음 — 내보내기의 ‘Claude 요청문 복사’를 쓰세요"}</small></span></div>
    ${window.LX_settingsHTML?window.LX_settingsHTML():""}
@@ -1162,9 +1166,10 @@ function openSettings(){hideSelPop();
   $("#oFont").onchange=e=>{S.readFont=e.target.value;applySettings()};
   $("#oRS").oninput=e=>{S.readSize=+e.target.value;$("#oRSv").textContent=S.readSize;applySettings()};
   $("#oSS").oninput=e=>{S.studySize=+e.target.value;$("#oSSv").textContent=S.studySize;applySettings()};
+  $("#oWW").oninput=e=>{S.writeW=+e.target.value;$("#oWWv").textContent=S.writeW>=1600?"꽉":S.writeW;applySettings()};
   $("#oLH").oninput=e=>{S.readLH=+e.target.value;$("#oLHv").textContent=S.readLH;applySettings()};
   document.querySelectorAll("#oTheme [data-th]").forEach(b=>b.onclick=()=>{S.theme=b.dataset.th;applySettings();document.querySelectorAll("#oTheme [data-th]").forEach(x=>x.classList.toggle("on",x===b))});
-  $("#oLayout").onclick=()=>{S.leftW=33.3;S.studyH=44;S.leftMode=0;applySettings();toast("처음 배치로 돌렸습니다")};
+  $("#oLayout").onclick=()=>{S.leftW=33.3;S.studyH=44;S.leftMode=0;S.writeW=860;applySettings();toast("처음 배치로 돌렸습니다")};
   window.LX_bindSettings&&window.LX_bindSettings();
   $("#oES").oninput=e=>{S.editSize=+e.target.value;$("#oESv").textContent=S.editSize;applySettings();document.querySelectorAll(".block textarea").forEach(autosize)};
   $("#oCpm").oninput=e=>{S.cpm=Math.max(100,+e.target.value||280);applySettings();renderFooter()};
