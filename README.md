@@ -26,7 +26,7 @@
 
 1. 이 폴더의 파일을 저장소 `shepherdsdesk/lexio`의 `main` 브랜치 맨 위에 올립니다.
 2. 저장소 **Settings → Pages → Build and deployment**에서 Source를 *Deploy from a branch*, Branch를 `main` / `(root)`로 저장합니다.
-3. **Releases → Draft a new release** → 태그 `v1.2.1` → `Lexio-AppleSilicon.dmg`, `Lexio-bible-pack.zip`을 첨부해 게시합니다.
+3. **Releases → Draft a new release** → 태그 `v1.3.0` → `Lexio-AppleSilicon.dmg`, `Lexio-bible-pack.zip`을 첨부해 게시합니다.
    홈페이지의 내려받기 단추는 `releases/latest/download/파일이름`을 가리키므로, 다음 버전에서도 **파일 이름을 그대로** 두면 링크가 자동으로 최신을 가리킵니다.
 
 다른 계정이나 저장소 이름을 쓰면 모든 파일에서 `shepherdsdesk/lexio`와 `shepherdsdesk.github.io/lexio`를 찾아 바꿔 주세요(`app/index.html`의 `SITE`, `PACK_URL` 포함).
@@ -40,7 +40,7 @@
 1. `설치도우미.html`을 브라우저로 열고, 안내대로 script.google.com 새 프로젝트(이름: 렉시오 웹 (배포용))에 파일 5개를 붙여 넣습니다.
 2. `setup` 실행 → 권한 허용 → 배포 → 새 배포 → 웹 앱(나 / 나만)으로 열어 확인합니다.
 3. 프로젝트 **공유** → 일반 액세스 *링크가 있는 모든 사용자 · 뷰어* → 링크를 복사해 `config.js`의 `webCopy`에 넣고 올립니다.
-4. 웹 버전은 원어 사전·데이터 엔진을 이 홈페이지의 `app/` 폴더에서 불러오므로, `app/` 폴더를 지우지 마세요.
+4. 웹 버전은 원어 사전·데이터 엔진·기본 공개 성경(`app/bible/`)을 이 홈페이지의 `app/` 폴더에서 불러오므로, `app/` 폴더를 지우지 마세요.
 
 새 버전을 낼 때는 같은 원본 프로젝트에 파일을 다시 붙여 넣으면, 사용자는 새 사본을 만들어 바꿉니다(설치 도움말 #web-update).
 
