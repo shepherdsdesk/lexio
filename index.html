@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>렉시오 — 성경을 읽다가, 그 자리에서 설교를 씁니다</title>
-<meta name="description" content="한국 목회자를 위한 무료 설교 작업실. 성경 본문·번역 대조·원어·검색 옆에서 설교 종류와 구조를 골라 원고를 씁니다. 맥 앱과 웹 버전.">
+<title>렉시오 Lexio — 성경을 읽다가, 그 자리에서 설교를 씁니다</title>
+<meta name="description" content="렉시오(Lexio) — 한국 목회자를 위한 무료 AI 설교 작업실. AI 도우미(Gemini·Claude·ChatGPT)와 함께, 성경 본문·번역 대조·원어·검색 옆에서 설교 종류와 구조를 골라 원고를 씁니다. 맥 앱과 웹 버전.">
 <meta name="theme-color" content="#1f4e5f">
-<meta property="og:title" content="렉시오 — 설교 작업실">
+<meta property="og:title" content="렉시오 Lexio — AI와 함께 쓰는 설교 작업실">
 <meta property="og:description" content="성경을 읽다가, 그 자리에서 설교를 씁니다. 교구 목회자가 만든 무료 설교 준비 도구.">
 <meta property="og:image" content="assets/main.jpg">
 <link rel="icon" href="assets/favicon.png">
@@ -17,28 +17,57 @@
 </head>
 <body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
-<div class="notice">렉시오 1.0 — 공개 성경 묶음, 단어 검색, 내 AI 키 연결(Gemini 무료 키 가능)이 들어왔습니다. <a href="install.html#update">업데이트 방법</a></div>
+<div class="mokyang-bar" style="background:#111113;color:#fff;font:500 13.5px/1.4 'Pretendard','Noto Sans KR','Apple SD Gothic Neo',sans-serif;letter-spacing:-.01em"><div style="max-width:1160px;margin:0 auto;padding:9px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><a href="https://mokyangdesk.com/desk/" style="color:#fff;text-decoration:none">← <b>목양 데스크</b> <span style="opacity:.75">프로그램 받는 곳</span></a><span style="opacity:.55">렉시오 · 셰퍼드 데스크 · 오늘의 네컷 · 365 기도동행 · 잇다 · <a href="https://mokyangdesk.com/" style="color:inherit">AI목양지원센터</a></span></div></div>
+<div class="notice">렉시오 1.3 — 공개 성경 8가지 기본 탑재, 웹 버전은 넣은 성경과 설정이 드라이브에 보관되어 다시 열어도 그대로. <a href="https://github.com/shepherdsdesk/lexio/releases/latest">무엇이 바뀌었나</a> · <a href="install.html#update">업데이트 방법</a></div>
 <header class="top"><div class="wrap">
-  <a class="logo" href="#top"><img src="assets/icon.png" alt=""><span>렉시오<small>읽고 · 묵상하고 · 전하다</small></span></a>
+  <a class="logo" href="#top"><img src="assets/icon.png" alt=""><span>렉시오<span class="en">Lexio</span><small>읽고 · 묵상하고 · 전하다</small></span></a>
   <nav class="menu">
-    <a href="#story">만든 이야기</a><a href="#features">기능</a><a href="#where">맥·웹</a><a href="#bible">성경 자료</a><a href="guide.html">사용 설명서</a><a href="install.html">설치 도움말</a>
+    <a href="#story">만든 이야기</a><a href="#ai">AI와 함께</a><a href="#features">기능</a><a href="#where">맥·웹</a><a href="#bible">성경 자료</a><a href="guide.html">사용 설명서</a><a href="install.html">설치 도움말</a>
   </nav>
   <a class="btn sm primary" href="#download">내려받기</a>
 </div></header>
 
 <main id="main">
 <section class="hero" id="top"><div class="wrap">
-  <div class="eyebrow">교구 목회자가 만든 무료 설교 작업실</div>
+  <div class="eyebrow">LEXIO · 교구 목회자가 만든 무료 설교 작업실</div>
   <h1>성경을 읽다가,<br>그 자리에서 설교를 씁니다.</h1>
   <p class="lead">왼쪽에는 본문과 번역 대조, 원어, 검색, 주석이. 오른쪽에는 설교 원고가. 새벽기도부터 장례 예배까지, 설교의 종류와 구조를 고르면 뼈대가 세워지고 목사님은 말씀에만 집중하시면 됩니다.</p>
+  <a class="ai-pill" href="#ai">✦ AI와 함께 씁니다 — Gemini · Claude · ChatGPT, 무료 키로도</a>
   <div class="ctas">
     <a class="btn primary" href="#download">맥용 내려받기</a>
-    <a class="btn" href="app/">웹에서 바로 열기</a>
+    <a class="btn" href="install.html#web">웹 버전 (구글) 설치</a>
     <a class="btn gold" href="guide.html">사용 설명서</a>
   </div>
   <div class="meta">무료 · 맥(M1 이후 애플 실리콘) · 웹 버전은 맥·윈도우·아이패드·안드로이드 브라우저</div>
   <p class="verse">“에스라가 여호와의 율법을 연구하여 준행하며 율례와 규례를 이스라엘에게 가르치기로 결심하였었더라” <span class="muted small">— 에스라 7:10, 개역한글</span></p>
   <div class="shot"><img src="assets/main.jpg" alt="렉시오 화면: 왼쪽에 빌립보서 4장 개역한글·BSB·헬라어 대조와 검색 결과, 오른쪽에 설교 원고 블록" loading="eager"></div>
+</div></section>
+
+
+<section class="aiband" id="ai"><div class="wrap">
+  <div class="eyebrow">AI와 함께 · With AI</div>
+  <h2>말씀 앞에는 목사님이,<br>손이 많이 가는 일은 AI가 돕습니다.</h2>
+  <p class="lead">렉시오는 AI와 함께 쓰도록 만든 설교 작업실입니다. 본문·구조·연구 메모·지금까지 쓴 원고를 AI가 함께 읽고, 블록마다 필요한 도움을 줍니다. 쓰시는 AI를 그대로 쓰실 수 있습니다.</p>
+
+  <div class="ai-grid">
+    <div class="ai-mock" role="img" aria-label="화면 예시: 원고 블록의 ✦ 도움 메뉴와 AI 제안 상자">
+      <div class="am-head"><b>2. 본론 — 염려 대신 기도</b><span class="am-help">✦ 도움</span></div>
+      <div class="am-text">바울은 감옥에서 이 편지를 씁니다. 그런데 그는 “아무것도 염려하지 말고”라고 말합니다…<span class="am-caret"></span></div>
+      <div class="am-chips"><span>초안 제안</span><span class="on">문장 다듬기</span><span>분량 줄이기</span><span>예화 아이디어</span><span>적용 질문</span><span>본문 관찰 질문</span></div>
+      <div class="am-answer"><small>✦ AI 제안</small>
+        <p>감옥은 바울의 형편이었지만, 그의 마음을 다스린 것은 형편이 아니라 기도였습니다. 그래서 그는 갇힌 자리에서 “아무것도 염려하지 말라”고 말할 수 있었습니다.</p>
+        <div class="am-btns"><span class="pri">커서 위치에 넣기</span><span>바꾸기</span><span>연구 메모로</span></div></div>
+      <p class="am-note">화면 예시입니다. AI의 답은 넣을지 말지를 목사님이 고르기 전까지 원고를 바꾸지 않습니다.</p>
+    </div>
+    <div class="ai-ways">
+      <div class="ai-way"><span class="num">1</span><div><h3>내 AI 키를 연결해서</h3><p><b>Gemini(무료 키 가능)</b> · Claude · ChatGPT 중에서 고릅니다. 블록마다 <b>✦ 도움</b>이 생기고, 작성 단계 위쪽의 <b>✦ 전체 개요 제안</b>은 모든 블록의 개요를 한 번에 잡아 줍니다. <a href="install.html#ai">키 받는 법 →</a></p></div></div>
+      <div class="ai-way"><span class="num">2</span><div><h3>키 없이, 쓰시는 AI 앱으로</h3><p><b>내보내기 → Claude에게 부탁할 요청문 복사</b>를 누르면 본문·설교 구조·연구 메모·원고가 담긴 요청문이 만들어집니다. 이미 구독하신 <b>Claude·ChatGPT 앱에 붙여 넣기</b>만 하면 됩니다.</p></div></div>
+      <div class="ai-way"><span class="num">3</span><div><h3>내 신학과 말투에 맞춰</h3><p>⚙ 설정의 <b>AI 지침</b>에 교단·신학 전통·설교 말투를 적어 두면 모든 도움과 요청문에 함께 들어갑니다. 기본 지침은 한국 교회 강단의 경어체입니다.</p></div></div>
+    </div>
+  </div>
+  <div class="ai-rules">
+    <span>✦ AI는 제안만, 결정은 목사님</span><span>✦ 키는 맥 키체인·내 브라우저에만</span><span>✦ AI를 켤 때만 본문과 원고가 전달</span><span>✦ 성도 개인 사정은 적지 마세요</span>
+  </div>
 </div></section>
 
 <section class="alt" id="story"><div class="wrap" style="max-width:780px">
@@ -47,7 +76,7 @@
   <p>교구를 섬기다 보면 한 주에 새벽기도, 수요예배, 금요예배, 심방과 장례까지 설교할 자리가 여러 번 찾아옵니다. 성경 앱을 열고, 원어 사이트를 찾고, 주석을 펴고, 워드에 원고를 쓰다 보면 정작 말씀 앞에 머무는 시간보다 창을 오가는 시간이 길어지곤 했습니다.</p>
   <p>렉시오는 그 자리를 한 화면으로 모은 도구입니다. 본문을 읽다가 단어를 누르면 원어가 열리고, 마음에 닿은 구절은 바로 원고에 들어갑니다. 설교의 종류에 따라 구조와 분량이 맞춰지고, 다 쓴 원고는 아이패드에 큰 글씨로 띄워 강단에 들고 갈 수 있습니다.</p>
   <p>이름은 ‘거룩한 읽기’를 뜻하는 렉시오 디비나(Lectio Divina)에서 빌려 왔습니다. 읽고, 묵상하고, 전하는 목회자의 걸음에 작은 도움이 되기를 바랍니다.</p>
-  <p style="margin-top:22px;font-family:var(--serif);font-size:18px">— 만든 사람 촌놈루니</p>
+  <p style="margin-top:22px;font-family:var(--serif);font-size:18px">— 만든 사람 이세진 목사</p>
 </div></section>
 
 <section id="why"><div class="wrap">
@@ -89,14 +118,14 @@
   </div>
 
   <div class="feature rev">
-    <div class="txt"><h3>④ 강단 보기</h3>
+    <div class="txt"><h3>④ 설교 원고 보기</h3>
       <p class="muted">다 쓴 원고를 아이패드에 큰 글씨로 띄웁니다.</p>
       <ul><li>글씨 크기 조절, 밤 모드</li><li>워드(.doc)·텍스트 파일로 내보내기, 원고 복사</li><li>백업 파일로 맥과 웹 사이에 원고 옮기기</li></ul></div>
-    <div class="shot"><img src="assets/pulpit.jpg" alt="강단 보기 화면" loading="lazy"></div>
+    <div class="shot"><img src="assets/pulpit.jpg" alt="설교 원고 보기 화면" loading="lazy"></div>
   </div>
 
   <div class="feature">
-    <div class="txt"><h3>⑤ AI 도우미는 선택</h3>
+    <div class="txt"><h3>⑤ AI 연결은 내 키로</h3>
       <p class="muted">필요할 때만, 내 키로 연결합니다.</p>
       <ul><li>Gemini(무료 키 가능)·Claude·ChatGPT 중에서 고르기</li><li>각 블록의 ✦ 도움: 초안, 문장 다듬기, 분량 줄이기, 예화 아이디어, 적용 질문</li><li>AI는 제안만 하고, 넣을지는 목사님이 정합니다. 신학 지침도 직접 고칠 수 있습니다</li><li>키가 없어도 ‘Claude 요청문 복사’로 쓰던 AI에 붙여 넣을 수 있습니다</li></ul></div>
     <div class="shot"><img src="assets/settings.jpg" alt="설정 화면: 세례/침례 표기, AI 연결" loading="lazy"></div>
@@ -111,23 +140,24 @@
     <thead><tr><th></th><th>맥 앱</th><th>웹 버전</th></tr></thead>
     <tbody>
       <tr><td>쓸 수 있는 기기</td><td>M1 이후 맥 (macOS 12 이상)</td><td>맥·윈도우·아이패드·안드로이드의 브라우저</td></tr>
-      <tr><td>인터넷</td><td>필요 없음 (글꼴까지 앱 안에)</td><td>처음 열 때 필요, 성경 파일은 기기에 저장</td></tr>
-      <tr><td>설치</td><td>내려받아 응용 프로그램 폴더로 옮기기</td><td>주소만 열면 끝, 아이패드는 ‘홈 화면에 추가’</td></tr>
+      <tr><td>인터넷</td><td>필요 없음 (글꼴까지 앱 안에)</td><td>필요 (원고는 내 구글 드라이브에 저장)</td></tr>
+      <tr><td>설치</td><td>내려받아 응용 프로그램 폴더로 옮기기</td><td>내 구글 계정에 사본을 만들어 배포 (한 번, 10분)</td></tr>
       <tr><td>AI 키 보관</td><td>맥 키체인에 암호화</td><td>그 브라우저에만 저장</td></tr>
       <tr><td>파일 내보내기</td><td>맥 저장 창으로 원하는 곳에</td><td>브라우저 내려받기 폴더로</td></tr>
-      <tr><td>원고 옮기기</td><td colspan="2">내보내기 → 백업 파일 내려받기 / 백업 불러오기 (같은 설교는 최근에 고친 쪽이 남습니다)</td></tr>
+      <tr><td>기기 사이 원고</td><td>백업 파일로 옮기기</td><td>컴퓨터·아이패드·휴대폰에 저절로 이어짐</td></tr>
+      <tr><td>맥 앱 ↔ 웹</td><td colspan="2">내보내기 → 백업 파일 내려받기 / 백업 불러오기 (같은 설교는 최근에 고친 쪽이 남습니다)</td></tr>
     </tbody>
   </table></div>
   <div class="feature" style="margin-top:48px">
-    <div class="txt"><h3>아이패드 세로 화면도</h3><p class="muted">좁은 화면에서는 위쪽의 ‘성경 | 설교’ 단추로 두 화면을 오갑니다. 강단 보기는 아이패드에서 가장 빛납니다.</p></div>
+    <div class="txt"><h3>아이패드 세로 화면도</h3><p class="muted">좁은 화면에서는 위쪽의 ‘성경 | 설교’ 단추로 두 화면을 오갑니다. 큰 글씨 ‘설교 원고 보기’는 아이패드에서 가장 빛납니다.</p></div>
     <div class="shot" style="max-width:360px;justify-self:center"><img src="assets/ipad.jpg" alt="아이패드 세로 화면" loading="lazy"></div>
   </div>
 </div></section>
 
 <section class="alt" id="bible"><div class="wrap">
   <div class="eyebrow">성경 자료</div>
-  <h2>무료 공개 성경으로 바로 시작합니다.</h2>
-  <p class="lead">렉시오 공개 성경 묶음은 누구나 내려받아 쓸 수 있는 번역본과 원문을 렉시오 형식으로 묶은 것입니다.</p>
+  <h2>공개 성경 8가지가 기본으로 들어 있습니다.</h2>
+  <p class="lead">누구나 자유롭게 쓸 수 있는 번역본과 원문 8가지가 렉시오에 <b>처음부터 들어 있습니다.</b> 설치하고 열면 바로 개역한글 본문이 나옵니다.</p>
   <div class="grid">
     <div class="card"><h3>한글</h3><p><b>개역한글</b> (1961, 퍼블릭 도메인)<br><span class="small muted">원본 데이터의 ‘침례’ 표기는 기본 설정에서 원문대로 ‘세례’로 보여 줍니다.</span></p></div>
     <div class="card"><h3>영어</h3><p><b>KJV · ASV · YLT · Darby · BSB</b><br><span class="small muted">BSB(Berean Standard Bible)는 읽기 쉬운 현대 영어 번역입니다.</span></p></div>
@@ -141,7 +171,7 @@
   <h2>원고와 자료는 목사님 곁에만 있습니다.</h2>
   <div class="grid">
     <div class="card"><h3>서버가 없습니다</h3><p>렉시오는 가입이나 로그인이 없습니다. 홈페이지는 프로그램을 내려받는 곳일 뿐, 원고를 받아 두지 않습니다.</p></div>
-    <div class="card"><h3>내 기기, 내 파일</h3><p>성경 파일과 원고는 맥 앱이면 그 맥에, 웹 버전이면 그 브라우저에 저장됩니다. 옮길 때는 백업 파일을 씁니다.</p></div>
+    <div class="card"><h3>내 기기, 내 드라이브</h3><p>맥 앱은 그 맥에, 웹 버전은 목사님 구글 계정의 드라이브에 저장됩니다. 만든 사람도 원고를 볼 수 없습니다.</p></div>
     <div class="card"><h3>AI는 켤 때만</h3><p>AI 키를 넣고 ✦ 도움을 누를 때만, 고른 AI 회사로 필요한 본문과 원고가 보내집니다. 심방 설교에 성도 개인 사정은 적지 마세요.</p></div>
   </div>
 </div></section>
@@ -150,16 +180,16 @@
   <div class="eyebrow">설치</div>
   <h2>세 단계면 시작할 수 있습니다.</h2>
   <div class="steps">
-    <div class="step"><h3>내려받기</h3><p>맥은 앱 zip을 풀어 <b>Lexio.app</b>을 응용 프로그램 폴더로. 웹은 <a href="app/">주소를 열기</a>만 하면 됩니다.</p><a class="btn sm" href="#download">내려받기</a></div>
+    <div class="step"><h3>내려받기</h3><p>맥은 DMG를 열어 <b>Lexio.app</b>을 응용 프로그램 폴더로 끌어다 놓습니다. 웹은 <a href="install.html#web">내 구글 계정에 사본을 만들어</a> 씁니다.</p><a class="btn sm" href="#download">내려받기</a></div>
     <div class="step"><h3>처음 한 번 열기</h3><p>애플 인증을 받지 않은 무료 앱이라, 맥에서는 터미널에 한 줄을 붙여 넣어 처음 한 번 열어 줍니다.</p><a class="btn sm" href="install.html#mac-open">여는 방법</a></div>
-    <div class="step"><h3>성경 넣기</h3><p>공개 성경 묶음을 풀고 ⚙︎ → 파일 고르기에서 모두 고릅니다. 그다음부터는 바로 열립니다.</p><a class="btn sm" href="install.html#first">처음 설정</a></div>
+    <div class="step"><h3>바로 시작</h3><p>개역한글·KJV 등 공개 성경 8가지가 처음부터 들어 있습니다. 가지고 계신 다른 번역은 ⚙ 설정에서 한 번만 넣으면 됩니다.</p><a class="btn sm" href="install.html#first">성경 자료</a></div>
   </div>
   <h3 style="margin-top:46px">설치가 막혔나요? 지금 보이는 화면을 고르세요.</h3>
   <div class="grid" style="margin-top:16px">
     <a class="card" href="install.html#mac-damaged" style="text-decoration:none;color:inherit"><h3>“손상되었기 때문에 열 수 없습니다”</h3><p>터미널 명령 한 줄로 해결합니다.</p></a>
     <a class="card" href="install.html#mac-open" style="text-decoration:none;color:inherit"><h3>“확인되지 않은 개발자”</h3><p>시스템 설정에서 ‘그래도 열기’를 누릅니다.</p></a>
-    <a class="card" href="install.html#first" style="text-decoration:none;color:inherit"><h3>성경이 안 보여요</h3><p>성경 파일을 넣는 방법을 확인하세요.</p></a>
-    <a class="card" href="install.html#ipad" style="text-decoration:none;color:inherit"><h3>아이패드에서 쓰고 싶어요</h3><p>웹 버전을 홈 화면에 추가합니다.</p></a>
+    <a class="card" href="install.html#first" style="text-decoration:none;color:inherit"><h3>다른 번역을 넣고 싶어요</h3><p>가지고 계신 성경·주석 파일 넣는 법.</p></a>
+    <a class="card" href="install.html#ipad" style="text-decoration:none;color:inherit"><h3>아이패드에서 쓰고 싶어요</h3><p>웹 버전 주소를 홈 화면에 추가합니다.</p></a>
     <a class="card" href="install.html#move" style="text-decoration:none;color:inherit"><h3>맥과 아이패드 원고 옮기기</h3><p>백업 파일로 주고받습니다.</p></a>
     <a class="card" href="install.html#ai" style="text-decoration:none;color:inherit"><h3>AI 도우미 연결</h3><p>Gemini 무료 키 받는 법부터.</p></a>
   </div>
@@ -169,9 +199,9 @@
   <div class="eyebrow">내려받기</div>
   <h2>모두 무료입니다.</h2>
   <div class="dl">
-    <div class="card"><span class="tag">맥 · M1 이후</span><h3>렉시오 맥 앱</h3><p>인터넷 없이 쓰는 맥용 앱입니다. 약 120MB. 내려받은 뒤 <a href="install.html#mac">설치 방법</a>을 따라 주세요.</p><a class="btn primary" href="https://github.com/shepherdsdesk/lexio/releases/latest/download/Lexio-mac-arm64.zip">맥용 내려받기</a></div>
-    <div class="card"><span class="tag">모든 기기 · 브라우저</span><h3>렉시오 웹 버전</h3><p>설치 없이 바로 엽니다. 아이패드·윈도우·안드로이드에서도 됩니다. 아이패드는 ‘홈 화면에 추가’를 권합니다.</p><a class="btn" href="app/">웹에서 열기</a></div>
-    <div class="card"><span class="tag">필수 · 무료 자료</span><h3>공개 성경 묶음</h3><p>개역한글, KJV, ASV, YLT, Darby, BSB, 히브리어 WLC, 헬라어 TR. 약 13MB. 압축을 풀어 렉시오에 넣으세요.</p><a class="btn gold" href="https://github.com/shepherdsdesk/lexio/releases/latest/download/Lexio-bible-pack.zip">성경 묶음 받기</a></div>
+    <div class="card"><span class="tag">맥 · M1 이후</span><h3>렉시오 맥 앱</h3><p>인터넷 없이 쓰는 맥용 앱입니다. 약 120MB. 내려받은 뒤 <a href="install.html#mac">설치 방법</a>을 따라 주세요.</p><a class="btn primary" href="https://github.com/shepherdsdesk/lexio/releases/latest/download/Lexio-AppleSilicon.dmg">맥용 내려받기 (DMG)</a></div>
+    <div class="card"><span class="tag">모든 기기 · 구글 계정</span><h3>렉시오 웹 버전</h3><p>내 구글 계정에 사본을 만들어 씁니다. 원고가 드라이브에 저장되어 컴퓨터·아이패드·휴대폰에서 이어집니다.</p><a class="btn" href="#" data-link="webcopy">웹 버전 사본 링크</a> <a class="small" href="install.html#web" style="margin-left:8px">설치 방법</a></div>
+    <div class="card"><span class="tag">이미 들어 있음 · 따로 보관용</span><h3>공개 성경 묶음</h3><p>개역한글, KJV, ASV, YLT, Darby, BSB, 히브리어 WLC, 헬라어 TR. 렉시오에 처음부터 들어 있어 따로 넣을 필요는 없습니다. 파일로 보관하실 분만 받으세요.</p><a class="btn gold" href="https://github.com/shepherdsdesk/lexio/releases/latest/download/Lexio-bible-pack.zip">성경 묶음 받기</a></div>
   </div>
   <p class="small muted" style="margin-top:18px">지난 버전과 변경 내역은 <a href="https://github.com/shepherdsdesk/lexio/releases">GitHub 릴리스</a>에서 볼 수 있습니다. 인텔 맥과 윈도우는 웹 버전을 써 주세요.</p>
 </div></section>
@@ -180,6 +210,7 @@
   <div class="eyebrow">묻고 답하기</div>
   <h2>자주 받는 질문입니다.</h2>
   <details><summary>정말 무료인가요?</summary><p>네. 렉시오와 공개 성경 묶음은 모두 무료입니다. AI 도우미는 선택이며, 유료 AI(Claude·ChatGPT)의 키를 넣으면 그 회사에 쓴 만큼 요금이 나갑니다. Gemini는 무료 키로도 쓸 수 있습니다.</p></details>
+  <details><summary>AI 비용이 드나요?</summary><p>렉시오는 무료이고, AI는 고르시는 대로입니다. 구글 <b>Gemini는 무료 키</b>로 쓸 수 있고, Claude·ChatGPT 키는 그 회사에 쓴 만큼 요금이 나갑니다. 키 없이 <b>요청문 복사</b>로 이미 쓰시는 AI 앱(Claude·ChatGPT 구독)에 붙여 넣으셔도 됩니다.</p></details>
   <details><summary>개역개정은 왜 들어 있지 않나요?</summary><p>개역개정·새번역은 대한성서공회가 저작권을 가지고 있어 허락 없이 함께 나눌 수 없습니다. 정식으로 가진 자료가 렉시오 형식이면 직접 넣어 개인 연구용으로 쓰실 수 있습니다. 자세한 내용은 <a href="bible.html">성경 자료</a>를 보세요.</p></details>
   <details><summary>단어를 눌러도 원어가 안 나와요.</summary><p>단어별 원어 연결은 스트롱 코드가 달린 성경 파일(.sdb)이 있어야 됩니다. 공개 묶음에는 아직 들어 있지 않아, 대신 ‘대조’ 보기로 히브리어·헬라어 원문을 절마다 함께 볼 수 있습니다.</p></details>
   <details><summary>윈도우나 인텔 맥에서도 되나요?</summary><p>맥 앱은 M1 이후(애플 실리콘) 맥 전용입니다. 윈도우와 인텔 맥에서는 웹 버전을 크롬이나 엣지로 열어 쓰시면 됩니다.</p></details>
@@ -191,11 +222,12 @@
 
 <footer><div class="wrap">
   <div class="cols">
-    <div><h4>렉시오</h4><p>읽고 · 묵상하고 · 전하다.<br>교구 목회자가 만든 무료 설교 작업실입니다.</p><p>만든 사람 촌놈루니 · <a href="mailto:contact@mokyangdesk.com">contact@mokyangdesk.com</a></p></div>
-    <div><h4>바로가기</h4><ul><li><a href="#download">내려받기</a></li><li><a href="app/">웹 버전 열기</a></li><li><a href="guide.html">사용 설명서</a></li><li><a href="install.html">설치 도움말</a></li><li><a href="bible.html">성경 자료</a></li></ul></div>
+    <div><h4>렉시오 <span style="font-family:Georgia,serif;font-style:italic;font-weight:400;opacity:.7">Lexio</span></h4><p>읽고 · 묵상하고 · 전하다.<br>교구 목회자가 만든 무료 설교 작업실입니다.</p><p>만든 사람 이세진 목사 · <a href="mailto:contact@mokyangdesk.com">contact@mokyangdesk.com</a></p></div>
+    <div><h4>바로가기</h4><ul><li><a href="#download">내려받기</a></li><li><a href="install.html#web">웹 버전 설치</a></li><li><a href="guide.html">사용 설명서</a></li><li><a href="install.html">설치 도움말</a></li><li><a href="bible.html">성경 자료</a></li><li><a href="https://mokyangdesk.com/desk/">목양 데스크 (프로그램 받는 곳)</a></li><li><a href="https://mokyangdesk.com/terms.html">이용 조건·저작권</a></li></ul></div>
     <div><h4>함께 쓴 것</h4><ul><li>성경 데이터: <a href="https://github.com/scrollmapper/bible_databases">scrollmapper</a> (MIT)</li><li>원어 사전: Strong's (퍼블릭 도메인), <a href="https://github.com/openscriptures/strongs">Open Scriptures</a></li><li>글꼴: Noto Sans/Serif KR, 고운바탕 등 (SIL OFL)</li><li>엔진: <a href="https://github.com/sql-js/sql.js">sql.js</a>, Electron (MIT)</li></ul></div>
   </div>
   <div class="fine">렉시오는 개인이 만든 무료 프로그램이며, 어떤 사용 결과에 대해서도 보증하지 않습니다. 원고는 기기에만 저장되니 정기적으로 백업해 주세요. 각 성경 번역본과 자료의 저작권은 저작권자에게 있습니다.</div>
 </div></footer>
+<script src="config.js"></script>
 </body>
 </html>
