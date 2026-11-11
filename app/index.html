@@ -936,8 +936,8 @@ function renderFooter(){
   F.innerHTML=`<div class="fbar"><div class="meter"><div class="bar"><i class="${cls}" style="width:${pct}%"></i></div>
    <div class="lbl">원고 <b>${chars.toLocaleString()}자</b> · 약 <b>${min.toFixed(1)}분</b> / 목표 ${goal}분 <span class="muted">(분당 ${S.cpm}자 기준)</span>${min>goal*1.02?` · <span style="color:var(--warn)">${Math.round((min-goal)*S.cpm).toLocaleString()}자 넘침</span>`:min<goal*.8&&chars?` · <span class="muted">${Math.round((goal-min)*S.cpm).toLocaleString()}자 더 쓸 수 있음</span>`:""}</div></div>
    <button class="btn" id="fNew">+ 새 설교</button></div>
-   <div class="credit"><a href="${SITE}" target="_blank" rel="noopener">렉시오</a> · 만든 사람 이세진 목사 · 의견과 고칠 점은 <a href="mailto:bear4jesus@gmail.com?subject=%EB%A0%89%EC%8B%9C%EC%98%A4%20%ED%94%BC%EB%93%9C%EB%B0%B1">bear4jesus@gmail.com</a> <button class="linkbtn" id="cpMail">주소 복사</button></div>`;
-  $("#cpMail").onclick=()=>copyText("bear4jesus@gmail.com","이메일 주소를 복사했습니다");
+   <div class="credit"><a href="${SITE}" target="_blank" rel="noopener">렉시오</a> · 만든 사람 이세진 목사 · 의견과 고칠 점은 <a href="mailto:contact@mokyangdesk.com?subject=%EB%A0%89%EC%8B%9C%EC%98%A4%20%ED%94%BC%EB%93%9C%EB%B0%B1">contact@mokyangdesk.com</a> <button class="linkbtn" id="cpMail">주소 복사</button></div>`;
+  $("#cpMail").onclick=()=>copyText("contact@mokyangdesk.com","이메일 주소를 복사했습니다");
   $("#fNew").onclick=()=>{SER=newSermon();saveLocal();renderRight();$("#topTitle").textContent="새 설교";toast("새 설교를 시작합니다")};
 }
 
@@ -1159,7 +1159,7 @@ function openSettings(){hideSelPop();
    <textarea id="oGuide" rows="5" style="width:100%;margin-top:6px;border:1px solid var(--line2);border-radius:8px;padding:8px 10px;background:var(--panel);font-size:13px;line-height:1.6">${esc(sysText())}</textarea></div>
    <p class="small" style="margin-top:10px"><a href="${SITE}" target="_blank" rel="noopener">렉시오 홈페이지</a> · <a href="${SITE}guide.html" target="_blank" rel="noopener">사용 설명서</a> · <a href="${PACK_URL}" target="_blank" rel="noopener">공개 성경 묶음 받기</a></p>
    <p class="small muted" style="margin-top:14px">원어 사전: Strong's Hebrew & Greek Dictionary (퍼블릭 도메인, JSON: Open Scriptures CC-BY-SA). 성경·주석 자료의 저작권은 각 저작권자에게 있으며, 이 프로그램은 개인 연구용입니다.</p>
-   <p class="small" style="margin-top:6px;color:var(--ink2)">렉시오 · 만든 사람 <b>이세진 목사</b> · 피드백 <b>bear4jesus@gmail.com</b></p>`);
+   <p class="small" style="margin-top:6px;color:var(--ink2)">렉시오 · 만든 사람 <b>이세진 목사</b> · 피드백 <b>contact@mokyangdesk.com</b></p>`);
   $("#sPick").onclick=()=>$("#fileIn").click();
   const d=$("#drop");d.ondragover=e=>{e.preventDefault();d.classList.add("over")};d.ondragleave=()=>d.classList.remove("over");d.ondrop=e=>{e.preventDefault();d.classList.remove("over");addFiles(e.dataTransfer.files)};
   document.querySelectorAll("[data-rmf]").forEach(b=>b.onclick=async()=>{const n=b.dataset.rmf;const i=LIB.findIndex(x=>x.name===n);if(i>=0){try{LIB[i].db&&LIB[i].db.close()}catch(e){}LIB.splice(i,1)}await IDB.del(n);saveMeta();openSettings();renderLeft()});

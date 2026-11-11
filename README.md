@@ -49,4 +49,4 @@
 - 렉시오 프로그램에는 성경 본문이 들어 있지 않습니다. 저작권이 있는 번역본·주석은 배포하지 않습니다.
 - 사용한 오픈소스와 자료는 [THIRD_PARTY.md](THIRD_PARTY.md)를 보세요.
 
-만든 사람 이세진 목사 · bear4jesus@gmail.com
+만든 사람 이세진 목사 · contact@mokyangdesk.com
